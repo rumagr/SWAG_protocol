@@ -1,4 +1,4 @@
-/**
+package SWAG_protocol.src; /**
     Importieren der notwendigen Pakete: Importieren Sie java.io.* und java.net.*, welche die grundlegenden Netzwerk- und Input/Output-Klassen in Java enthalten.
 
     ServerSocket erstellen: Erstellen Sie ein Objekt der Klasse ServerSocket. Dies repräsentiert den Server im Netzwerk. Sie müssen einen Port angeben, auf dem der Server auf eingehende Verbindungen hören soll.
@@ -11,6 +11,7 @@
 **/
 
 import org.json.JSONObject;
+
 
 import java.io.*;
 import java.net.*;
@@ -27,7 +28,7 @@ public class SimpleTCPServer {
 
                     BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                     PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                    Writer f = new FileWriter("src/test.json");
+                    Writer f = new FileWriter("test.json");
 
                     String jsonstr = "";
                     String inputLine;
@@ -38,6 +39,8 @@ public class SimpleTCPServer {
                     JSONObject j = new JSONObject(jsonstr);
 
                     j.write(f);
+
+                    System.out.println(j.get("message").toString());
 
                     f.flush();
 

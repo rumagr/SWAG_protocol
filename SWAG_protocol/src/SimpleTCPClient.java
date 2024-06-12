@@ -1,4 +1,4 @@
-/**
+package SWAG_protocol.src; /**
     Importieren der notwendigen Pakete: Importieren Sie java.io.* und java.net.* für Netzwerk- und I/O-Funktionalitäten.
 
     Socket erstellen: Erstellen Sie ein Socket-Objekt, um eine Verbindung zum Server herzustellen. Geben Sie die Adresse des Servers (zum Beispiel localhost, wenn der Server auf demselben Rechner läuft) und den Port an, auf dem der Server hört.
@@ -9,8 +9,8 @@
 
     Verbindung schließen: Schließen Sie den Socket und die Streams, wenn die Kommunikation beendet ist.
 
-**/    
-
+**/
+import java.util.Scanner;
 import java.io.*;
 import java.net.*;
 import org.json.*;
@@ -25,10 +25,15 @@ public class SimpleTCPClient{
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
 
+            Scanner myObj = new Scanner(System.in);  // Create a Scanner object
+            System.out.println("Enter message");
+
+            String message = myObj.nextLine();  // Read user input
+
             //String userInput;
             JSONObject userInput = new JSONObject();
-            userInput.put("deine", "Mutter");
-            userInput.put("zahl", 1);
+            userInput.put("1", "2");
+            userInput.put("message", message);
 
             userInput.write(out);
 
