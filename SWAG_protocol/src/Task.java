@@ -91,4 +91,27 @@ public class Task {
         this.id = id;
     }
 
+    public TaskArt getArt() {
+        return art;
+    }
+
+    public JSONObject getJsonData() {
+        return jsonData;
+    }
+
+    public List<UniqueIdentifier> getUser() {
+        return user;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public UniqueIdentifier getId() {
+        return id;
+    }
 }
