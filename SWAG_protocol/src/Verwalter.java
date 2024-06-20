@@ -1,4 +1,4 @@
-package SWAG_protocol.src;
+package src;
 
 import java.nio.channels.SocketChannel;
 import java.util.Queue;

@@ -1,4 +1,4 @@
-package SWAG_protocol.src;
+package src;
 /**
   
   Nicht SO https://stackoverflow.com/questions/13111308/simple-java-threaded-tcp-server-thread sondern:

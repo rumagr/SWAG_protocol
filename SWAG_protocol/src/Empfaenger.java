@@ -1,4 +1,4 @@
-package SWAG_protocol.src;
+package src;
 
 public class Empfaenger {
 }

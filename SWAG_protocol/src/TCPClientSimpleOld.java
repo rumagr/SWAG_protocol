@@ -1,4 +1,6 @@
-package SWAG_protocol.src; /**
+package src;
+/**
+ *
     Importieren der notwendigen Pakete: Importieren Sie java.io.* und java.net.* für Netzwerk- und I/O-Funktionalitäten.
 
     Socket erstellen: Erstellen Sie ein Socket-Objekt, um eine Verbindung zum Server herzustellen. Geben Sie die Adresse des Servers (zum Beispiel localhost, wenn der Server auf demselben Rechner läuft) und den Port an, auf dem der Server hört.

@@ -1,4 +1,4 @@
-package SWAG_protocol.src; /**
+package src; /**
     Importieren der notwendigen Pakete: Importieren Sie java.io.* und java.net.*, welche die grundlegenden Netzwerk- und Input/Output-Klassen in Java enthalten.
 
     ServerSocket erstellen: Erstellen Sie ein Objekt der Klasse ServerSocket. Dies repräsentiert den Server im Netzwerk. Sie müssen einen Port angeben, auf dem der Server auf eingehende Verbindungen hören soll.

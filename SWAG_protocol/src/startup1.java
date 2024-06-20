@@ -1,5 +1,4 @@
-package SWAG_protocol.src;
-
+package src;
 public class startup1 {
     public static void main(String[] args){
         System.out.println("Ausgabe aus der main()-Methode");

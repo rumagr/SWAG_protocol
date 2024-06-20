@@ -1,4 +1,4 @@
-package SWAG_protocol.src;
+package src;
 
 public class startup {
     public static void main(String[] args){

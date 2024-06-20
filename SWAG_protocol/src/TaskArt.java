@@ -1,5 +1,4 @@
-package SWAG_protocol.src;
-
+package src;
 
 public enum TaskArt {
     MESSAGE_SELF, MESSAGE_OTHERS, CR, CRR, SCC, SCCR, STU,
