@@ -15,9 +15,9 @@ import java.io.*;
 import java.net.*;
 import org.json.*;
 
-public class SimpleTCPClient{
-    public static void main(String[] args) throws IOException {
-        String serverAddress = "141.22.27.104"; // Die Adresse des Servers
+public class SimpleTCPClient implements Runnable {
+    public void run() {
+        String serverAddress = "127.0.0.1"; // Die Adresse des Servers
         int port = 6789; // Der Port, auf dem der Server hört
 
             try (Socket socket = new Socket(serverAddress, port)) {

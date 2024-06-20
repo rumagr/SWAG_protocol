@@ -1,7 +1,5 @@
 package SWAG_protocol.src;
 
-import org.json.*;
-
 import java.io.*;
 
 public class main2 {
