@@ -16,6 +16,8 @@ public class Task {
     private int time;
     //an Timer/Verwalter von Timer/UI
     private UniqueIdentifier id;
+    //braucht man eigentkich überall
+    private String nickname;
 
 
     //von Empfaenger an Verwalter/UI
@@ -29,7 +31,8 @@ public class Task {
     }
 
     //von UI an Verwaltung (sende an)
-    public Task(TaskArt art, String message, UniqueIdentifier id) {
+    public Task(TaskArt art, String message, UniqueIdentifier id, String nickname){
+        this.nickname = nickname;
         this.art = art;
         this.jsonData = null;
         this.user = null;
@@ -113,5 +116,9 @@ public class Task {
 
     public UniqueIdentifier getId() {
         return id;
+    }
+
+    public String toString() {
+        return STR."Task: \{art} \{jsonData} \{user} \{message} \{time} \{id}";
     }
 }
