@@ -8,9 +8,15 @@ import java.io.*;
 public class main2 {
     public final static String s = "test.json";
 
-    private static final Logger logger = LogManager.getLogger(main2.class);
+    public static final Logger logger = LogManager.getLogger(main2.class);
 
-    public static void main(String[] args) {
-        logger.info("Hello, World!" + s);
+    public static void main(String[] args)
+    {
+        UI ui = new UI();
+
+        Thread t = new Thread(ui);
+
+        t.start();
     }
+
 }
