@@ -12,9 +12,9 @@ public class Task {
     private List<UniqueIdentifier> user;
     //an Verwalter von UI
     private String message;
-    //an Timer von Verwaltung
+    //an ProtokollTimer von Verwaltung
     private int time;
-    //an Timer/Verwalter von Timer/UI
+    //an ProtokollTimer/Verwalter von ProtokollTimer/UI
     private UniqueIdentifier id;
 
 
@@ -50,8 +50,8 @@ public class Task {
 
 
     //von UI an Verwaltung (verbinde mit user)
-    //von Verwalter an Timer (stoppe Timer)
-    //von Timer an Verwalter (Timer abgelaufen)
+    //von Verwalter an ProtokollTimer (stoppe ProtokollTimer)
+    //von ProtokollTimer an Verwalter (ProtokollTimer abgelaufen)
     public Task(TaskArt art, UniqueIdentifier id) {
         this.art = art;
         this.jsonData = null;
@@ -61,7 +61,7 @@ public class Task {
         this.id = id;
     }
 
-    //von Verwalter an Timer (starte Timer)
+    //von Verwalter an ProtokollTimer (starte ProtokollTimer)
     public Task(TaskArt art, int time, UniqueIdentifier id) {
         this.art = art;
         this.jsonData = null;
