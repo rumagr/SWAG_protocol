@@ -1,0 +1,4 @@
+2024-06-22 15:53:28.247 [Thread-0] INFO  src.main2 - Command:cto
+2024-06-22 15:53:28.251 [Thread-0] INFO  src.main2 - IP @cto is: 192.168.255..255
+2024-06-22 15:53:28.251 [Thread-0] ERROR src.main2 - Port @cto is: 8080
+2024-06-22 15:53:28.252 [Thread-0] ERROR src.main2 - Invalid IP or Port at sendToManagement

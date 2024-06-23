@@ -3,7 +3,7 @@
     <Appenders>
         <!-- File Appender for logging to a file -->
         <File name="LogFile" fileName="logs/${date:yyyy-MM-dd}/${date:HH-mm-ss}.log" append="false">
-            <PatternLayout pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n}%n"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </File>
     </Appenders>
 
