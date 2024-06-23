@@ -29,7 +29,7 @@ public class Sender implements Runnable {
             {
                 Task t = Sender_Queue.take();
                 main2.logger.info(STR."Task received in Sender\{t.toString()}");
-                handleTase(t);
+                handleTask(t);
             }
             catch (Exception e)
             {
@@ -39,7 +39,7 @@ public class Sender implements Runnable {
         }
     }
 
-    private void handleTase(Task task)
+    private void handleTask(Task task)
     {
         switch(task.getArt())
         {
