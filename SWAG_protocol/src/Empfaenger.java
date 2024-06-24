@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Empfaenger implements Runnable{
-    private static final int SERVER_PORT = 6789;
+    public static final int SERVER_PORT = 6789;
     private static final int BUFFER_SIZE = 1024;
     private static final int EXPECTED_DATA_LENGTH = 53;
     private static final int THREAD_POOL_SIZE = 10;

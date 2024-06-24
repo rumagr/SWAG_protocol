@@ -13,7 +13,7 @@ public class Task {
     //an Verwalter von UI
     private String message;
     //an ProtokollTimer von Verwaltung
-    private int time;
+    private long time;
     //an ProtokollTimer/Verwalter von ProtokollTimer/UI
     private UniqueIdentifier id;
     //braucht man eigentkich überall
@@ -65,7 +65,7 @@ public class Task {
     }
 
     //von Verwalter an ProtokollTimer (starte ProtokollTimer)
-    public Task(TaskArt art, int time, UniqueIdentifier id) {
+    public Task(TaskArt art, long time, UniqueIdentifier id) {
         this.art = art;
         this.jsonData = null;
         this.user = null;
@@ -110,7 +110,7 @@ public class Task {
         return message;
     }
 
-    public int getTime() {
+    public long getTime() {
         return time;
     }
 
