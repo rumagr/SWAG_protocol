@@ -13,6 +13,10 @@ public class RoutingTable {
         entries.add(new RoutingEntry(targetIp, targetPort, nextIp, nextPort, hopCount));
     }
 
+    public void addEntry(RoutingEntry entry) {
+        entries.add(entry);
+    }
+
     public void removeEntry(String targetIp, int targetPort) {
         entries.removeIf(entry -> entry.getTargetIp().equals(targetIp) && entry.getTargetPort() == targetPort);
     }

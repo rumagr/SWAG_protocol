@@ -20,7 +20,7 @@ public class Verwalter implements Runnable
     @Override
     public void run() {
 
-        erstelleRoutingTable();
+       // erstelleRoutingTable();
         long delay = 10000L;
         try {
             ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_TABLE_UPDATE_EXPIRED, delay, null));
@@ -88,18 +88,22 @@ public class Verwalter implements Runnable
 
     private void erstelleRoutingTable() {
         // erstelle RoutingTable mit diesem Knoten als entry
-        try {
-            InetAddress ip = InetAddress.getLocalHost();
-            routingTabelle.addEntry(ip.getHostAddress(), Empfaenger.SERVER_PORT, ip.getHostAddress(), Empfaenger.SERVER_PORT, 0);
-            main2.logger.info("RoutingTable created");
-        } catch (Exception e) {
-            main2.logger.error("Exception in erstelleRoutingTable", e);
-        }
+        //try {
+            //InetAddress ip = InetAddress.getLocalHost();
+            //routingTabelle.addEntry(ip.getHostAddress(), Empfaenger.SERVER_PORT, ip.getHostAddress(), Empfaenger.SERVER_PORT, 0);
+          //  main2.logger.info("RoutingTable created");
+        //} catch (Exception e) {
+          //  main2.logger.error("Exception in erstelleRoutingTable", e);
+        //}
 
     }
 
     private void handleCR(Task t) {
         //Verarbeite RouringTable und sende CCR
+
+        RoutingEntry newEntry = new RoutingEntry(t.getId().getIP(), t.getId().getPort(), t.getId().getIP(), t.getId().getPort(), 1);
+
+        routingTabelle.addEntry(newEntry);
 
         JSONObject data = t.getJsonData();
 
@@ -112,6 +116,10 @@ public class Verwalter implements Runnable
 
     private void handleCRR(Task t) {
         //update RoutingTable
+
+        RoutingEntry newEntry = new RoutingEntry(t.getId().getIP(), t.getId().getPort(), t.getId().getIP(), t.getId().getPort(), 1);
+
+        routingTabelle.addEntry(newEntry);
 
         JSONObject data = t.getJsonData();
 
@@ -166,12 +174,13 @@ public class Verwalter implements Runnable
 
         // Check and decrement the TTL value in the shared header
         int TLL = (int) sharedHeader.get("ttl");
-        if (TLL > 0) {
+        if (TLL > 1) {
             TLL--;
             sharedHeader.put("ttl", TLL);
         } else {
             // Log if the TTL has expired
             main2.logger.info("TTL expired");
+            return;
         }
 
         // If no routing entry is found, log an error and throw an exception
@@ -267,5 +276,43 @@ public class Verwalter implements Runnable
         }
         Verwalter.connections.remove(uniqueId);
     }
+
+    private JSONObject buildCommonHeader(JSONObject data,int type_id)
+    {
+        JSONObject header = new JSONObject();
+        header.put("type_id", type_id);
+        header.put("length", data.toString().length());
+        header.put("crc32", CRC32Check.getCRC32Checksum(data.toString()));
+
+        return header;
+    }
+
+    private JSONObject buildSharedHeader(JSONObject data)
+    {
+
+        JSONObject oldHeader = (JSONObject) data.get("header");
+
+        int ttl = oldHeader.getInt("ttl");
+
+        if (ttl > 1) {
+            ttl--;
+        } else {
+            // Log if the TTL has expired
+            main2.logger.info("TTL expired");
+            return null;
+        }
+
+        JSONObject header = new JSONObject();
+
+        header.put("src_ip", oldHeader.getString("src_ip"));
+        header.put("src_port", oldHeader.getInt("src_port"));
+        header.put("dest_ip", oldHeader.getString("dest_ip"));
+        header.put("dest_port", oldHeader.getInt("dest_port"));
+        header.put("ttl", oldHeader.getInt("ttl"));
+
+        return header;
+    }
+
+
 }
 
