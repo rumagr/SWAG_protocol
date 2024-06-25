@@ -30,7 +30,7 @@ public class Sender implements Runnable {
         while (true) {
             try {
                 Task t = Sender_Queue.take();
-                main2.logger.info(STR."Task received in Sender\{t.toString()}");
+                main2.logger.info(String.format("Task received in Sender{%s}", t.toString()));
                 handleTask(t);
             } catch (Exception e) {
                 main2.logger.error("Exeption in Sender", e);

@@ -8,8 +8,6 @@ import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import static java.lang.StringTemplate.STR;
-
 
 //CONNECT_TO, SEND_MESSAGE_TO, GET_CONNECTED_USERS
 
@@ -55,7 +53,7 @@ public class UI implements Runnable {
 
                 String command = fullcommand[0];
 
-                main2.logger.info(STR."Command:\{fullcommand[0]}");
+                main2.logger.info(String.format("Command: %s", fullcommand[0]));
 
                 switch(command)
                 {
@@ -94,11 +92,11 @@ public class UI implements Runnable {
         }
 
         String ip = split[0];
-        main2.logger.info(STR."IP @cto is: \{ip}");
+        main2.logger.info(String.format("IP @cto is: %s", ip));
         String port = split[1];
-        main2.logger.info(STR."Port @ cto is: \{port}");
+        main2.logger.info(String.format("Port @cto is: %s", port));
         String message = split[2];
-        main2.logger.info(STR."Message is: \{message}");
+        main2.logger.info(String.format("Message is: %s", message));
 
         if(!checkIPandPort(ip, port))
         {
@@ -126,9 +124,9 @@ public class UI implements Runnable {
         }
 
         String ip = split[0];
-        main2.logger.info(STR."IP @cto is: \{ip}");
+        main2.logger.info(String.format("IP @cto is: %s", ip));
         String port = split[1];
-        main2.logger.error(STR."Port @cto is: \{port}");
+        main2.logger.error(String.format("Port @cto is: %s", port));
 
         if(!checkIPandPort(ip, port))
         {
@@ -173,7 +171,7 @@ public class UI implements Runnable {
                 try
                 {
                     Task t = UI_Queue.take();
-                    main2.logger.info(STR."Task received in UI_Queue_Worker\{t.toString()}" );
+                    main2.logger.info(String.format("Task received in UI_Queue_Worker{%s}", t.toString()));
                     handleUItask(t);
                 }
                 catch (Exception e)
@@ -203,9 +201,8 @@ public class UI implements Runnable {
         //Message ausgeben (von wem anders an mich)
         private void messageSelf(Task t) {
             JSONObject body = t.getJsonData();
-            System.out.println(STR."Message from: \{body.getString("nickname")}\{body.getString("message")}");
-            main2.logger.info(STR."Message from: \{body.getString("nickname")}\{body.getString("message")}");
-
+            System.out.println(String.format("Message from: %s %s", body.getString("nickname"), body.getString("message")));
+            main2.logger.info(String.format("Message from: %s %s", body.getString("nickname"), body.getString("message")));
         }
         //Paket wird analsiert und ich kriege es, quasi zurück
         private void connectedUsers(Task t) {

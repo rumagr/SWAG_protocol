@@ -99,11 +99,19 @@ public class Verwalter implements Runnable
     }
 
     private void handleCR(Task t) {
-        //TODO Verarbeite RouringTable und sende CCR
+        //Verarbeite RouringTable und sende CCR
+
+        JSONObject data = t.getJsonData();
+
+        JSONArray table = (JSONArray) data.get("table");
+
+        routingTabelle.updateRoutingTable(table);
+
+        //TODO sende CCR
     }
 
     private void handleCRR(Task t) {
-        //TODO verarbeite RoutingTable
+        //update RoutingTable
 
         JSONObject data = t.getJsonData();
 
@@ -135,7 +143,13 @@ public class Verwalter implements Runnable
     }
 
     private void handleSTU(Task t) {
-        //TODO verarbeite RoutingTable
+        //update RoutingTable
+
+        JSONObject data = t.getJsonData();
+
+        JSONArray table = (JSONArray) data.get("table");
+
+        routingTabelle.updateRoutingTable(table);
     }
 
     private void handleMessage(Task t) {
