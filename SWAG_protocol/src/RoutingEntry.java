@@ -1,5 +1,7 @@
 package src;
 
+import org.json.JSONObject;
+
 public class RoutingEntry {
     private String targetIp;
     private int targetPort;
@@ -38,5 +40,23 @@ public class RoutingEntry {
 
     public void setHopCount(int hopCount) {
         this.hopCount = hopCount;
+    }
+
+    public JSONObject toJSONObject() {
+        JSONObject obj = new JSONObject();
+        obj.put("targetIp", targetIp);
+        obj.put("targetPort", targetPort);
+        obj.put("nextIp", nextIp);
+        obj.put("nextPort", nextPort);
+        obj.put("hopCount", hopCount);
+        return obj;
+    }
+
+    public void setNextIp(String nextIp) {
+        this.nextIp = nextIp;
+    }
+
+    public void setNextPort(int nextPort) {
+        this.nextPort = nextPort;
     }
 }

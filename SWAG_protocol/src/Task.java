@@ -119,6 +119,6 @@ public class Task {
     }
 
     public String toString() {
-        return STR."Task: \{art} \{jsonData} \{user} \{message} \{time} \{id}";
+        return String.format("Task{art=%s, jsonData=%s, user=%s, message=%s, time=%d, id=%s}", art, jsonData, user, message, time, id);
     }
 }

@@ -14,7 +14,7 @@ public class Verwalter implements Runnable
     public static BlockingQueue<Task> Verwalter_Queue = new LinkedBlockingQueue<>();
     public static ConcurrentHashMap<UniqueIdentifier, SocketChannel> connections = new ConcurrentHashMap<>();
     private static RoutingTable routingTabelle = new RoutingTable();
-
+    private int refreshCounter = 0;
 
     @Override
     public void run() {
@@ -110,7 +110,21 @@ public class Verwalter implements Runnable
     }
 
     private void handleSCCR(Task t) {
-        //TODO nichts ?
+
+        //stoppe den Timer fuer den Knoten
+        try {
+            ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_STOP, t.getId()));
+        } catch (InterruptedException e) {
+            main2.logger.error("Exception in handleSCCR", e);
+        }
+
+        //keep counter up to date
+        refreshCounter--;
+
+        if(!(refreshCounter > 0))
+        {
+            //TODO sende STU an alle next in RoutingTable
+        }
     }
 
     private void handleSTU(Task t) {
@@ -173,15 +187,34 @@ public class Verwalter implements Runnable
     }
 
     private void handleTableUpdateExpired(Task t) {
-        //TODO sende SCC an alle next in RoutingTable
+        // starte Timer fuer alle Eintraege in der RoutingTable
+
+        //counter for keeping track of the missing number of responses
+        refreshCounter = routingTabelle.getAllNextUniqueIds().size();
+
+        for (UniqueIdentifier id : routingTabelle.getAllNextUniqueIds()) {
+            try {
+                ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_START, 1000L, id));
+            } catch (InterruptedException e) {
+                main2.logger.error("Exception in handleTableUpdateExpired", e);
+            }
+        }
     }
 
     private void handleTimerExpired(Task t) {
-        //TODO poison reverse
+        //poison reverse
+        routingTabelle.setHopCountForPoisonReverse(t.getId().getIP(), t.getId().getPort(), 32);
+        CloseConnection(t.getId());
+        refreshCounter--;
+
+        if(!(refreshCounter > 0))
+        {
+            //TODO sende STU an alle next in RoutingTable
+        }
     }
 
     private void handleCONNECT_TO(Task t) {
-        //TODO Verbindung aufbauen
+        //TODO sende CR
     }
 
     private void handleSEND_MESSAGE_TO(Task t) {
@@ -189,7 +222,13 @@ public class Verwalter implements Runnable
     }
 
     private void handleGET_CONNECTED_USERS(Task t) {
-        //TODO sende Liste der verbundenen User
+        //sende Liste der verbundenen User
+        try {
+            UI.UI_Queue.put(new Task(TaskArt.CONNECTED_USERS, routingTabelle.getAllConectedUniqueIds()));
+        }
+        catch (InterruptedException e) {
+            main2.logger.error("Exception in handleGET_CONNECTED_USERS", e);
+        }
     }
 
     private void CloseConnection(UniqueIdentifier uniqueId) {

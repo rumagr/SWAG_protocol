@@ -8,6 +8,8 @@ import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static java.lang.StringTemplate.STR;
+
 
 //CONNECT_TO, SEND_MESSAGE_TO, GET_CONNECTED_USERS
 
@@ -108,7 +110,7 @@ public class UI implements Runnable {
         Task t = new Task(TaskArt.SEND_MESSAGE_TO, message, new UniqueIdentifier(ip, iport), this.nickname);
 
         main2.logger.info("SEND_MESSAGE_TO Task to UI_Queue");
-        UI_Queue.add(t);
+        Verwalter.Verwalter_Queue.add(t);
 
         System.out.println("SEND_MESSAGE_TO added to UI_Queue");
     }
@@ -149,7 +151,7 @@ public class UI implements Runnable {
         Task t = new Task(TaskArt.GET_CONNECTED_USERS);
 
         main2.logger.info("GET_CONNECTED_USERS Task to UI_Queue");
-        UI_Queue.add(t);
+        Verwalter.Verwalter_Queue.add(t);
 
         System.out.println("GET_CONNECTED_USERS added to UI_Queue");
     }
@@ -171,7 +173,7 @@ public class UI implements Runnable {
                 try
                 {
                     Task t = UI_Queue.take();
-                    main2.logger.info(STR."Task received in UI_Queue_Worker\{t.toString()}");
+                    main2.logger.info(STR."Task received in UI_Queue_Worker\{t.toString()}" );
                     handleUItask(t);
                 }
                 catch (Exception e)
