@@ -22,6 +22,8 @@ public class Empfaenger implements Runnable{
     private static final int BUFFER_SIZE = 1024;
     private static final int EXPECTED_DATA_LENGTH = 53;
     private static final int THREAD_POOL_SIZE = 10;
+    public static Selector empfaengerSelector;
+
 
     @Override
     public void run() {
@@ -31,6 +33,8 @@ public class Empfaenger implements Runnable{
 
         try (Selector selector = Selector.open();
              ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
+
+            empfaengerSelector = selector;
 
             // Bind the server socket channel to the specified port
             serverSocketChannel.bind(new InetSocketAddress(port));

@@ -3,7 +3,9 @@ package src;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
@@ -43,18 +45,29 @@ public class Sender implements Runnable {
         JSONObject jsonData = t.getJsonData();
         UniqueIdentifier id = t.getId();
 
-        SocketChannel s = Verwalter.connections.get(id);
-        if (s == null) {
-            main2.logger.error("SocketChannel not found");
-            throw new NullPointerException("SocketChannel not found");
+        SocketChannel socketChannel = Verwalter.connections.get(id);
+
+        //handle not yet connected
+        if (socketChannel == null) {
+            main2.logger.info("SocketChannel not found");
+
+            try {
+                socketChannel = SocketChannel.open(new InetSocketAddress(id.getIP(), id.getPort()));
+
+                socketChannel.configureBlocking(false);
+                socketChannel.register(Empfaenger.empfaengerSelector, SelectionKey.OP_READ);
+                Empfaenger.empfaengerSelector.wakeup();
+                Verwalter.connections.put(id,socketChannel);
+            }
+            catch (IOException e) {
+                main2.logger.error("Exception while creating SocketChannel", e);
+            }
         }
         ByteBuffer buffer = ByteBuffer.wrap(jsonData.toString().getBytes());
         try {
-            s.write(buffer);
+            socketChannel.write(buffer);
         } catch (IOException e) {
             main2.logger.error("Exception while writing to SocketChannel", e);
         }
-
-
     }
 }
