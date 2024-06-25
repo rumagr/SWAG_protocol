@@ -125,22 +125,26 @@ public class Empfaenger implements Runnable{
             try {
                 // Convert the buffer's data to a string representation
                 String jsonstr = new String(buffer.array(), StandardCharsets.UTF_8);
+
+                String commonHeader = jsonstr.substring(0, 54);
+                String paketData = jsonstr.substring(54);
+
                 // Parse the string into a JSON object
-                JSONObject j = new JSONObject(jsonstr);
+                JSONObject header = new JSONObject(commonHeader);
+                JSONObject data = new JSONObject(paketData);
+
                 // Log the received message
-                main2.logger.info("Received message: {}", j.get("message").toString());
+                main2.logger.info("Received message: {}", data.get("message").toString());
 
                 // Perform an integrity check on the received JSON object
-                if(!checkIntegrity(j))
+                if(!checkIntegrity(header, data))
                 {
                     // Log an error if the integrity check fails and exit the method
                     main2.logger.error("Integrity check failed");
                     return;
                 }
                 // Extract the header, data, and shared header from the JSON object
-                JSONObject header = new JSONObject(j.get("header")); // get header
-                JSONObject data = new JSONObject(j.get("data")); // get data
-                JSONObject sharedHeader = new JSONObject(j.get("header")); // get shared header
+                JSONObject sharedHeader = new JSONObject(data.get("header")); // get shared header
 
                 // Determine the task type from the header
                 TaskArt ta = TaskArt.intToTaskArt(header.getInt("type_id"));
@@ -171,7 +175,7 @@ public class Empfaenger implements Runnable{
                 }
 
                 // Create a new task with the determined task type and JSON object
-                Task t = new Task(ta, j, new UniqueIdentifier(ip, port));
+                Task t = new Task(ta, data, new UniqueIdentifier(ip, port));
 
                 // Add the task to the appropriate queue based on the task type
                 if(TaskArt.MESSAGE_SELF == ta)
@@ -205,39 +209,12 @@ public class Empfaenger implements Runnable{
         });
     }
 
-    private static boolean checkIntegrity(JSONObject j) {
-        // Extract the header from the received JSON object
-        JSONObject header = new JSONObject(j.get("header"));
-        // Extract the data part from the received JSON object for CRC32 validation
-        JSONObject data = new JSONObject(j.get("data"));
+    private static boolean checkIntegrity(JSONObject header, JSONObject data) {
         // Retrieve the expected CRC32 checksum value from the header
         long expectedCRC32 = header.getLong("crc32");
 
-        // Calculate the actual CRC32 checksum of the data part
-        boolean crc32IsValid = CRC32Check.isChecksumValid(data.toString(), expectedCRC32);
-
-        // Check if the data part's length is exactly 53 bytes
-        boolean lengthIsValid = checkLength(j);
-
         // Return true if both the CRC32 checksum and the length of the data are valid
-        return crc32IsValid && lengthIsValid;
-    }
-
-    private static boolean checkLength(JSONObject j) {
-        try {
-            // Extract the 'data' part from the JSON object
-            JSONObject data = j.getJSONObject("data");
-            // Convert the 'data' part to a string representation
-            String dataString = data.toString();
-            // Convert the string to a byte array using UTF-8 encoding
-            byte[] dataBytes = dataString.getBytes(StandardCharsets.UTF_8);
-            // Check if the byte array's length is exactly 53 bytes
-            return dataBytes.length == EXPECTED_DATA_LENGTH;
-        } catch (Exception e) {
-            // Log any exceptions encountered during the length check
-            main2.logger.error("Error checking data length", e);
-            return false;
-        }
+        return CRC32Check.isChecksumValid(data.toString(), expectedCRC32);
     }
 
 

@@ -1,5 +1,6 @@
 package src;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.InetAddress;
@@ -103,6 +104,12 @@ public class Verwalter implements Runnable
 
     private void handleCRR(Task t) {
         //TODO verarbeite RoutingTable
+
+        JSONObject data = t.getJsonData();
+
+        JSONArray table = (JSONArray) data.get("table");
+
+        routingTabelle.updateRoutingTable(table);
     }
 
     private void handleSCC(Task t) {
