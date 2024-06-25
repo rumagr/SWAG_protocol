@@ -2,6 +2,7 @@ package src;
 
 import org.json.JSONObject;
 
+import java.net.SocketException;
 import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
@@ -38,7 +39,13 @@ public class UI implements Runnable {
     @Override
     public void run() {
         Scanner scanner = new Scanner(System.in);
-
+        String ipAddress = null;
+        try {
+            ipAddress = NetworkUtils.getFirstNonLoopbackAddress(true);
+        } catch (SocketException e) {
+            main2.logger.error("Error while getting IP address", e);
+        }
+        System.out.println("IP Addresse: " + ipAddress);
         System.out.println("Bitte einen Nickname eingeben: ");
 
         this.nickname = scanner.nextLine();

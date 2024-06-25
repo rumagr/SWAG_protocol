@@ -3,6 +3,7 @@ package src;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.nio.channels.SocketChannel;
 import java.util.Queue;
@@ -333,10 +334,12 @@ public class Verwalter implements Runnable
 
     private JSONObject buildSharedHeader(UniqueIdentifier id)
     {
-        InetAddress ip;
+
+        String src_ip = null;
+
 
         try {
-            ip = InetAddress.getLocalHost();
+            src_ip = Inet4Address.getLocalHost().getHostAddress();
 
             main2.logger.info("Fetched own ID");
         } catch (Exception e) {
@@ -345,7 +348,6 @@ public class Verwalter implements Runnable
         }
 
         //eigene IP und port
-        String src_ip = ip.getHostAddress();
         int src_port = Empfaenger.SERVER_PORT;
         String dest_ip = id.getIP();
         int dest_port = id.getPort();

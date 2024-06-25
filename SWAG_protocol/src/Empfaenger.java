@@ -171,7 +171,7 @@ public class Empfaenger implements Runnable{
                 {
                     try {
                         // Get the local IP address
-                        String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+                        String ipAddress = NetworkUtils.getFirstNonLoopbackAddress(true);
 
                         main2.logger.info("Local IP: {}", ipAddress);
                         System.out.println("Local IP: " + ipAddress);
