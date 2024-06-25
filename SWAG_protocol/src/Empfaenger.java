@@ -3,6 +3,7 @@ package src;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketOption;
@@ -170,8 +171,10 @@ public class Empfaenger implements Runnable{
                 {
                     try {
                         // Get the local IP address
-                        InetAddress inetAddress = InetAddress.getLocalHost();
-                        String ipAddress = inetAddress.getHostAddress();
+                        String ipAddress = Inet4Address.getLocalHost().getHostAddress();
+
+                        main2.logger.info("Local IP: {}", ipAddress);
+                        System.out.println("Local IP: " + ipAddress);
 
                         // Compare the destination IP in the shared header with the local IP
                         if(sharedHeader.getString("dest_ip").equals(ipAddress) || sharedHeader.getString("dest_ip").equals("127.0.0.1"))

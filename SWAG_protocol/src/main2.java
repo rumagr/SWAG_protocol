@@ -11,7 +11,7 @@ public class main2 {
     public static final Logger logger = LogManager.getLogger(main2.class);
 
     public static void main(String[] args)
-    {
+{
         UI ui = new UI();
         Verwalter verwalter = new Verwalter();
         Empfaenger empfaenger = new Empfaenger();

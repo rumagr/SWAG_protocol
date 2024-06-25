@@ -53,6 +53,7 @@ public class Sender implements Runnable {
             main2.logger.info("SocketChannel not found");
 
             try {
+                //TODO weiß auch nicht
                 main2.logger.info("Creating new SocketChannel with IP{" + id.getIP() + "} and Port{" + id.getPort() + "}");
                 socketChannel = SocketChannel.open(new InetSocketAddress(id.getIP(), id.getPort()));
 
