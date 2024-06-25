@@ -48,6 +48,8 @@ public class UI implements Runnable {
             System.out.println("Die Commands sind: cto@ip:port, smto@ip:port:message, gcu");
             String input = scanner.nextLine();
 
+            main2.logger.info(String.format("Input: %s", input));
+
             if (input.matches(isMessage)) {
                 String[] fullcommand = input.split("@");
 
@@ -88,7 +90,8 @@ public class UI implements Runnable {
         if(split.length < 3)
         {
             main2.logger.error("Invalid Information at sendToManagement");
-            throw new IllegalArgumentException("Invalid command");
+            //throw new IllegalArgumentException("Invalid command");
+            return;
         }
 
         String ip = split[0];
@@ -101,16 +104,15 @@ public class UI implements Runnable {
         if(!checkIPandPort(ip, port))
         {
             main2.logger.error("Invalid IP or Port at sendToManagement");
-            throw new IllegalArgumentException("Invalid command");
+            //throw new IllegalArgumentException("Invalid command");
+            return;
         }
         int iport = Integer.parseInt(port);
 
         Task t = new Task(TaskArt.SEND_MESSAGE_TO, message, new UniqueIdentifier(ip, iport), this.nickname);
 
-        main2.logger.info("SEND_MESSAGE_TO Task to UI_Queue");
+        main2.logger.info("SEND_MESSAGE_TO Task to Verwalter_Queue");
         Verwalter.Verwalter_Queue.add(t);
-
-        System.out.println("SEND_MESSAGE_TO added to UI_Queue");
     }
 
     private void connectToManagment(String information) {

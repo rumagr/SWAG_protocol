@@ -104,6 +104,7 @@ public class Empfaenger implements Runnable{
     }
 
     private static void forwardPacket(ExecutorService executorService, SelectionKey key) throws IOException {
+
         // Retrieve the client channel from the selection key
         SocketChannel client = (SocketChannel) key.channel();
         // Allocate a buffer to read data from the client
@@ -116,6 +117,8 @@ public class Empfaenger implements Runnable{
         String ip = remoteAddress.getAddress().getHostAddress();
         int port = remoteAddress.getPort();
         UniqueIdentifier uniqueId = new UniqueIdentifier(ip, port);
+
+        main2.logger.info("forwardPacket from IP: " + ip + " Port: " + port);
         // If no data is read, close the client channel and exit the method
         if ((read == -1)) {
             client.close();
@@ -130,15 +133,20 @@ public class Empfaenger implements Runnable{
                 // Convert the buffer's data to a string representation
                 String jsonstr = new String(buffer.array(), StandardCharsets.UTF_8);
 
-                String commonHeader = jsonstr.substring(0, 54);
-                String paketData = jsonstr.substring(54);
+                main2.logger.info("Received message: {}", jsonstr);
+
+                String commonHeader = jsonstr.substring(1, 54);
+
+                main2.logger.info("Received common header: {}", commonHeader);
+                String paketData = jsonstr.substring(55, jsonstr.indexOf("]}]")) + "]}";
+                main2.logger.info("Received common data: {}", paketData);
 
                 // Parse the string into a JSON object
                 JSONObject header = new JSONObject(commonHeader);
                 JSONObject data = new JSONObject(paketData);
 
                 // Log the received message
-                main2.logger.info("Received message: {}", data.get("message").toString());
+                main2.logger.info("Received data: {}", data.toString());
 
                 // Perform an integrity check on the received JSON object
                 if(!checkIntegrity(header, data))
@@ -151,7 +159,7 @@ public class Empfaenger implements Runnable{
                 JSONObject sharedHeader = new JSONObject(data.get("header")); // get shared header
 
                 // Determine the task type from the header
-                TaskArt ta = TaskArt.intToTaskArt(header.getInt("type_id"));
+                TaskArt ta = TaskArt.intToTaskArt(Integer.parseInt(header.getString("type_id")));
 
                 // Check if the message is intended for the current server
                 if(TaskArt.MESSAGE == ta)
@@ -187,6 +195,7 @@ public class Empfaenger implements Runnable{
                     try {
                         // Add to UI queue if the task type is MESSAGE_SELF
                         UI.UI_Queue.put(t);
+                        main2.logger.info("Task added to UI_Queue{%s}", t.toString());
                     }
                     catch (InterruptedException e)
                     {
@@ -199,6 +208,7 @@ public class Empfaenger implements Runnable{
                     try {
                         // Add to Verwalter queue if the task type is MESSAGE_OTHERS
                         Verwalter.Verwalter_Queue.put(t);
+                        main2.logger.info("Task added to Verwalter_Queue{%s}", t.toString());
                     }
                     catch (InterruptedException e)
                     {
@@ -206,7 +216,12 @@ public class Empfaenger implements Runnable{
                         main2.logger.info("Exception in Empfaenger forwardPacket nach Verwalter", e);
                     }
                 }
-            } finally {
+            }
+            catch (Exception e) {
+                // Log any exceptions encountered during task processing
+                main2.logger.info("Exception in Empfaenger forwardPacket", e);
+            }
+            finally {
                 // Clear the buffer for future use
                 buffer.clear();
             }
@@ -215,7 +230,7 @@ public class Empfaenger implements Runnable{
 
     private static boolean checkIntegrity(JSONObject header, JSONObject data) {
         // Retrieve the expected CRC32 checksum value from the header
-        long expectedCRC32 = header.getLong("crc32");
+        long expectedCRC32 = Long.parseLong(header.getString("crc32"));
 
         // Return true if both the CRC32 checksum and the length of the data are valid
         return CRC32Check.isChecksumValid(data.toString(), expectedCRC32);

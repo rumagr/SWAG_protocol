@@ -100,6 +100,7 @@ public class Verwalter implements Runnable
 
     private void handleCR(Task t) {
         //Verarbeite RouringTable und sende CCR
+        main2.logger.info("Handling CR");
 
         RoutingEntry newEntry = new RoutingEntry(t.getId().getIP(), t.getId().getPort(), t.getId().getIP(), t.getId().getPort(), 1);
 
@@ -265,7 +266,14 @@ public class Verwalter implements Runnable
         RoutingEntry next = routingTabelle.findNextHop(t.getId().getIP(), t.getId().getPort());
 
         try {
-            Sender.Sender_Queue.put(new Task(TaskArt.MESSAGE, message, new UniqueIdentifier(next.getNextIp(), next.getNextPort())));
+            if(next == null)
+            {
+                main2.logger.error("[handleSEND_MESSAGE_TO] No entry found in RoutingTable");
+                Sender.Sender_Queue.put(new Task(TaskArt.MESSAGE, message, t.getId()));
+            }
+            else {
+                Sender.Sender_Queue.put(new Task(TaskArt.MESSAGE, message, new UniqueIdentifier(next.getNextIp(), next.getNextPort())));
+            }
         }
         catch (InterruptedException e) {
             main2.logger.error("Exception in handleSEND_MESSAGE_TO", e);
@@ -301,9 +309,24 @@ public class Verwalter implements Runnable
     private JSONObject buildCommonHeader(JSONObject data,int type_id)
     {
         JSONObject header = new JSONObject();
-        header.put("type_id", type_id);
-        header.put("length", data.toString().length());
-        header.put("crc32", CRC32Check.getCRC32Checksum(data.toString()));
+
+        String length = data.toString().length() + "";
+
+        String crc32 = CRC32Check.getCRC32Checksum(data.toString()) + "";
+
+        int missinglength = 16 - crc32.length() - length.length() -1;
+
+        main2.logger.info("missing length " + missinglength + "crc32: " + crc32);
+        main2.logger.info("length " + length);
+
+        for(int i = 0; i < missinglength; i++)
+        {
+            length = "0" + length;
+        }
+
+        header.put("length", length);
+        header.put("type_id","" + type_id);
+        header.put("crc32", crc32);
 
         return header;
     }

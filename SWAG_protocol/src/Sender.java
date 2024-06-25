@@ -53,6 +53,7 @@ public class Sender implements Runnable {
             main2.logger.info("SocketChannel not found");
 
             try {
+                main2.logger.info("Creating new SocketChannel with IP{" + id.getIP() + "} and Port{" + id.getPort() + "}");
                 socketChannel = SocketChannel.open(new InetSocketAddress(id.getIP(), id.getPort()));
 
                 socketChannel.configureBlocking(false);
@@ -67,6 +68,7 @@ public class Sender implements Runnable {
         ByteBuffer buffer = ByteBuffer.wrap(jsonPacket.toString().getBytes());
         try {
             socketChannel.write(buffer);
+            main2.logger.info("Message sent to IP{" + id.getIP() + "} and Port{" + id.getPort() + "}");
         } catch (IOException e) {
             main2.logger.error("Exception while writing to SocketChannel", e);
         }
