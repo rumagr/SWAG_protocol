@@ -287,30 +287,65 @@ public class Verwalter implements Runnable
         return header;
     }
 
-    private JSONObject buildSharedHeader(JSONObject data)
+    private JSONObject buildSharedHeader(UniqueIdentifier id)
     {
+        InetAddress ip;
 
-        JSONObject oldHeader = (JSONObject) data.get("header");
+        try {
+            ip = InetAddress.getLocalHost();
 
-        int ttl = oldHeader.getInt("ttl");
-
-        if (ttl > 1) {
-            ttl--;
-        } else {
-            // Log if the TTL has expired
-            main2.logger.info("TTL expired");
+            main2.logger.info("Fetched own ID");
+        } catch (Exception e) {
+            main2.logger.error("Exception in buildSharedHeader", e);
             return null;
         }
 
+        //eigene IP und port
+        String src_ip = ip.getHostAddress();
+        int src_port = Empfaenger.SERVER_PORT;
+        String dest_ip = id.getIP();
+        int dest_port = id.getPort();
+        int ttl = 16;
+
         JSONObject header = new JSONObject();
 
-        header.put("src_ip", oldHeader.getString("src_ip"));
-        header.put("src_port", oldHeader.getInt("src_port"));
-        header.put("dest_ip", oldHeader.getString("dest_ip"));
-        header.put("dest_port", oldHeader.getInt("dest_port"));
-        header.put("ttl", oldHeader.getInt("ttl"));
+        header.put("src_ip", src_ip);
+        header.put("src_port", src_port);
+        header.put("dest_ip", dest_ip);
+        header.put("dest_port", dest_port);
+        header.put("ttl", ttl);
 
         return header;
+    }
+
+    private JSONObject buildMessage(String message, String nickname,UniqueIdentifier id)
+    {
+        JSONArray paket = new JSONArray();
+        JSONObject data;
+        JSONObject header;
+        JSONObject sharedHeader;
+
+        sharedHeader = buildSharedHeader(id);
+
+        if(sharedHeader == null)
+        {
+            main2.logger.error("Error in buildMessage");
+            return null;
+        }
+
+        data = new JSONObject();
+
+        data.put("message", message);
+        data.put("nickname", nickname);
+        data.put("header", sharedHeader);
+
+        header = buildCommonHeader(data, 1);
+
+        paket.put(header);
+        paket.put(data);
+
+        main2.logger.info("Paket Message created");
+        return data;
     }
 
 

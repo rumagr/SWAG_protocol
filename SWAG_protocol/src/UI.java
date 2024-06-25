@@ -135,7 +135,7 @@ public class UI implements Runnable {
         }
         int iport = Integer.parseInt(port);
 
-        Task t = new Task(TaskArt.SEND_MESSAGE_TO, new UniqueIdentifier(ip, iport));
+        Task t = new Task(TaskArt.CONNECT_TO, new UniqueIdentifier(ip, iport));
 
         main2.logger.info("SEND_MESSAGE_TO Task to Verwalter_Queue");
         Verwalter.Verwalter_Queue.add(t);

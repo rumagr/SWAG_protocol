@@ -1,13 +1,16 @@
 package src;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
 
 public class Task {
     private TaskArt art;
-    //von Empfaenger an Verwalter/UI und von Verwalter an Sender
+    //von Empfaenger an Verwalter/UI
     private JSONObject jsonData;
+    //von Verwalter an Sender
+    private JSONArray jsonPacket;
     //an UI von Verwalter
     private List<UniqueIdentifier> user;
     //an Verwalter von UI
@@ -85,9 +88,9 @@ public class Task {
     }
 
     //von Verwaltung an Sender
-    public Task(TaskArt art, JSONObject jsonData, UniqueIdentifier id) {
+    public Task(TaskArt art, JSONArray jsonPacket, UniqueIdentifier id) {
         this.art = art;
-        this.jsonData = jsonData;
+        this.jsonPacket = jsonPacket;
         this.user = null;
         this.message = null;
         this.time = 0;
@@ -116,6 +119,14 @@ public class Task {
 
     public UniqueIdentifier getId() {
         return id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public JSONArray getJsonPacket() {
+        return jsonPacket;
     }
 
     public String toString() {

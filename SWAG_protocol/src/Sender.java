@@ -1,5 +1,6 @@
 package src;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class Sender implements Runnable {
     }
 
     private void handleTask(Task t) {
-        JSONObject jsonData = t.getJsonData();
+        JSONArray jsonPacket = t.getJsonPacket();
         UniqueIdentifier id = t.getId();
 
         SocketChannel socketChannel = Verwalter.connections.get(id);
@@ -63,7 +64,7 @@ public class Sender implements Runnable {
                 main2.logger.error("Exception while creating SocketChannel", e);
             }
         }
-        ByteBuffer buffer = ByteBuffer.wrap(jsonData.toString().getBytes());
+        ByteBuffer buffer = ByteBuffer.wrap(jsonPacket.toString().getBytes());
         try {
             socketChannel.write(buffer);
         } catch (IOException e) {
