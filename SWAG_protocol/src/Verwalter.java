@@ -111,7 +111,8 @@ public class Verwalter implements Runnable
 
         routingTabelle.updateRoutingTable(table);
 
-        //TODO sende CCR
+        //sende CRR
+        sendCR(t.getId());
     }
 
     private void handleCRR(Task t) {
@@ -129,7 +130,8 @@ public class Verwalter implements Runnable
     }
 
     private void handleSCC(Task t) {
-        //TODO antworte mit SCCR
+        //antworte mit SCCR
+        sendSCCR(t.getId());
     }
 
     private void handleSCCR(Task t) {
@@ -146,7 +148,11 @@ public class Verwalter implements Runnable
 
         if(!(refreshCounter > 0))
         {
-            //TODO sende STU an alle next in RoutingTable
+            //sende STU an alle next in RoutingTable
+            for(UniqueIdentifier id : routingTabelle.getAllNextUniqueIds())
+            {
+                sendSTU(id);
+            }
         }
     }
 
@@ -239,16 +245,31 @@ public class Verwalter implements Runnable
 
         if(!(refreshCounter > 0))
         {
-            //TODO sende STU an alle next in RoutingTable
+            //sende STU an alle next in RoutingTable
+            for(UniqueIdentifier id : routingTabelle.getAllNextUniqueIds())
+            {
+                sendSTU(id);
+            }
         }
     }
 
     private void handleCONNECT_TO(Task t) {
-        //TODO sende CR
+        //sende CR
+        sendCR(t.getId());
     }
 
     private void handleSEND_MESSAGE_TO(Task t) {
-        //TODO Nachricht senden
+        //Nachricht senden
+        JSONArray message = buildMessage(t.getMessage(), t.getNickname(), t.getId());
+
+        RoutingEntry next = routingTabelle.findNextHop(t.getId().getIP(), t.getId().getPort());
+
+        try {
+            Sender.Sender_Queue.put(new Task(TaskArt.MESSAGE, message, new UniqueIdentifier(next.getNextIp(), next.getNextPort())));
+        }
+        catch (InterruptedException e) {
+            main2.logger.error("Exception in handleSEND_MESSAGE_TO", e);
+        }
     }
 
     private void handleGET_CONNECTED_USERS(Task t) {
@@ -318,7 +339,7 @@ public class Verwalter implements Runnable
         return header;
     }
 
-    private JSONObject buildMessage(String message, String nickname,UniqueIdentifier id)
+    private JSONArray buildMessage(String message, String nickname,UniqueIdentifier id)
     {
         JSONArray paket = new JSONArray();
         JSONObject data;
@@ -339,15 +360,112 @@ public class Verwalter implements Runnable
         data.put("nickname", nickname);
         data.put("header", sharedHeader);
 
+        //TODO typen als Define in einer Klasse
         header = buildCommonHeader(data, 1);
 
         paket.put(header);
         paket.put(data);
 
         main2.logger.info("Paket Message created");
+        return paket;
+    }
+
+    private JSONObject buildTableData(UniqueIdentifier id)
+    {
+        JSONObject data = new JSONObject();
+        JSONArray table = routingTabelle.toJSONArray(id);
+        JSONObject header = buildSharedHeader(id);
+
+        data.put("header", header);
+        data.put("table", table);
+
         return data;
     }
 
+    private void sendCR(UniqueIdentifier id)
+    {
+        JSONObject data = buildTableData(id);
+        JSONObject header = buildCommonHeader(data, 2);
+
+        JSONArray paket = new JSONArray();
+        paket.put(header);
+        paket.put(data);
+
+        try {
+            Sender.Sender_Queue.put(new Task(TaskArt.CR, paket, id));
+        }
+        catch (InterruptedException e) {
+            main2.logger.error("Exception in sendCR", e);
+        }
+    }
+
+    private void sendCRR(UniqueIdentifier id)
+    {
+        JSONObject data = buildTableData(id);
+        JSONObject header = buildCommonHeader(data, 3);
+
+        JSONArray paket = new JSONArray();
+        paket.put(header);
+        paket.put(data);
+
+        try {
+            Sender.Sender_Queue.put(new Task(TaskArt.CRR, paket, id));
+        }
+        catch (InterruptedException e) {
+            main2.logger.error("Exception in sendCRR", e);
+        }
+    }
+
+    private void sendSCC(UniqueIdentifier id)
+    {
+        JSONObject data = new JSONObject();
+        JSONObject header = buildCommonHeader(data, 4);
+
+        JSONArray paket = new JSONArray();
+        paket.put(header);
+        paket.put(data);
+
+        try {
+            Sender.Sender_Queue.put(new Task(TaskArt.SCC, paket, id));
+        }
+        catch (InterruptedException e) {
+            main2.logger.error("Exception in sendSCC", e);
+        }
+    }
+
+    private void sendSCCR(UniqueIdentifier id)
+    {
+        JSONObject data = new JSONObject();
+        JSONObject header = buildCommonHeader(data, 5);
+
+        JSONArray paket = new JSONArray();
+        paket.put(header);
+        paket.put(data);
+
+        try {
+            Sender.Sender_Queue.put(new Task(TaskArt.SCCR, paket, id));
+        }
+        catch (InterruptedException e) {
+            main2.logger.error("Exception in sendSCCR", e);
+        }
+    }
+
+    private void sendSTU(UniqueIdentifier id)
+    {
+        JSONObject data = buildTableData(id);
+        JSONObject header = buildCommonHeader(data, 6);
+
+        JSONArray paket = new JSONArray();
+        paket.put(header);
+        paket.put(data);
+
+        try {
+            Sender.Sender_Queue.put(new Task(TaskArt.STU, paket, id));
+        }
+        catch (InterruptedException e) {
+            main2.logger.error("Exception in sendSTU", e);
+        }
+    }
 
 }
 

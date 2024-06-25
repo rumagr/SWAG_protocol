@@ -24,13 +24,13 @@ public class Task {
 
 
     //von Empfaenger an Verwalter/UI
-    public Task(TaskArt art, JSONObject jsonData) {
+    public Task(TaskArt art, JSONObject jsonData, UniqueIdentifier id) {
         this.art = art;
         this.jsonData = jsonData;
         this.user = null;
         this.message = null;
         this.time = 0;
-        this.id = null;
+        this.id = id;
     }
 
     //von UI an Verwaltung (sende an)

@@ -68,13 +68,13 @@ public class UI implements Runnable {
                         break;
                     default:
                         main2.logger.error("Invalid commmand at switch statement");
-                        throw new IllegalArgumentException("Invalid command");
+                        //throw new IllegalArgumentException("Invalid command");
                 }
             }
             else
             {
                 main2.logger.error("Invalid commmand");
-                throw new IllegalArgumentException("Invalid command");
+                //throw new IllegalArgumentException("Invalid command");
             }
 
         }
@@ -139,8 +139,6 @@ public class UI implements Runnable {
 
         main2.logger.info("SEND_MESSAGE_TO Task to Verwalter_Queue");
         Verwalter.Verwalter_Queue.add(t);
-
-        System.out.println("SEND_MESSAGE_TO added to UI_Queue");
 
     }
 

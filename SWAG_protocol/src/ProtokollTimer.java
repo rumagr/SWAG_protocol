@@ -61,7 +61,7 @@ public class ProtokollTimer implements Runnable
             catch (Exception e)
             {
                 main2.logger.error("Exception in ProtokollTimer",e);
-                Thread.currentThread().interrupt();
+                //Thread.currentThread().interrupt();
             }
         }
     }
