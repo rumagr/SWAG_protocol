@@ -133,16 +133,19 @@ public class Empfaenger implements Runnable{
                 // Convert the buffer's data to a string representation
                 String jsonstr = new String(buffer.array(), StandardCharsets.UTF_8);
 
-                main2.logger.info("Received message: {}", jsonstr);
+                //main2.logger.info("Received message: {}", jsonstr);
 
                 String commonHeader = jsonstr.substring(1, 54);
 
                 main2.logger.info("Received common header: {}", commonHeader);
-                String paketData = jsonstr.substring(55, jsonstr.indexOf("]}]")) + "]}";
-                main2.logger.info("Received common data: {}", paketData);
 
                 // Parse the string into a JSON object
                 JSONObject header = new JSONObject(commonHeader);
+
+                String paketData = jsonstr.substring(55, header.getInt("length")+3);
+                main2.logger.info("Received common data: {}", paketData);
+
+
                 JSONObject data = new JSONObject(paketData);
 
                 // Log the received message
@@ -156,10 +159,11 @@ public class Empfaenger implements Runnable{
                     return;
                 }
                 // Extract the header, data, and shared header from the JSON object
-                JSONObject sharedHeader = new JSONObject(data.get("header")); // get shared header
+                JSONObject sharedHeader = data.getJSONObject("header"); // get shared header
 
+                main2.logger.info("Received shared header: {}", sharedHeader.toString());
                 // Determine the task type from the header
-                TaskArt ta = TaskArt.intToTaskArt(Integer.parseInt(header.getString("type_id")));
+                TaskArt ta = TaskArt.intToTaskArt(Integer.parseInt((String) header.get("type_id")));
 
                 // Check if the message is intended for the current server
                 if(TaskArt.MESSAGE == ta)
@@ -170,7 +174,7 @@ public class Empfaenger implements Runnable{
                         String ipAddress = inetAddress.getHostAddress();
 
                         // Compare the destination IP in the shared header with the local IP
-                        if(sharedHeader.get("dest_ip") == ipAddress)
+                        if(sharedHeader.getString("dest_ip").equals(ipAddress) || sharedHeader.getString("dest_ip").equals("127.0.0.1"))
                         {
                             // If the IPs match, set the task type to MESSAGE_SELF
                             ta = TaskArt.MESSAGE_SELF;

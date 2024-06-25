@@ -113,7 +113,7 @@ public class Verwalter implements Runnable
         routingTabelle.updateRoutingTable(table);
 
         //sende CRR
-        sendCR(t.getId());
+        sendCRR(t.getId());
     }
 
     private void handleCRR(Task t) {
@@ -310,7 +310,7 @@ public class Verwalter implements Runnable
     {
         JSONObject header = new JSONObject();
 
-        String length = data.toString().length() + "";
+        String length = (data.toString().length() + 53)  + "";
 
         String crc32 = CRC32Check.getCRC32Checksum(data.toString()) + "";
 

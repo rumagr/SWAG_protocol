@@ -1,0 +1,89 @@
+2024-06-25 17:53:41.313 [Thread-2] INFO  src.main2 - Server gestartet auf Port 6789
+2024-06-25 17:53:52.989 [Thread-4] INFO  src.main2 - Input: cto@127.0.0.1:6789
+2024-06-25 17:53:52.989 [Thread-4] INFO  src.main2 - Command: cto
+2024-06-25 17:53:52.990 [Thread-4] INFO  src.main2 - IP @cto is: 127.0.0.1
+2024-06-25 17:53:52.990 [Thread-4] ERROR src.main2 - Port @cto is: 6789
+2024-06-25 17:53:52.992 [Thread-4] INFO  src.main2 - SEND_MESSAGE_TO Task to Verwalter_Queue
+2024-06-25 17:53:52.998 [Thread-1] INFO  src.main2 - Task received in Verwalter{Task{art=CONNECT_TO, jsonData=null, user=null, message=null, time=0, id=127.0.0.1:6789}}
+2024-06-25 17:53:53.005 [Thread-1] INFO  src.main2 - Fetched own ID
+2024-06-25 17:53:53.006 [Thread-1] INFO  src.main2 - [getCRC32Checksum] input: {"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"table":[]}
+2024-06-25 17:53:53.007 [Thread-1] INFO  src.main2 - [getCRC32Checksum] Calculated checksum: 364628030
+2024-06-25 17:53:53.011 [Thread-1] INFO  src.main2 - missing length 3crc32: 364628030
+2024-06-25 17:53:53.011 [Thread-1] INFO  src.main2 - length 161
+2024-06-25 17:53:53.012 [Thread-3] INFO  src.main2 - Task received in Sender{Task{art=CR, jsonData=null, user=null, message=null, time=0, id=127.0.0.1:6789}}
+2024-06-25 17:53:53.013 [Thread-3] INFO  src.main2 - SocketChannel not found
+2024-06-25 17:53:53.013 [Thread-3] INFO  src.main2 - Creating new SocketChannel with IP{127.0.0.1} and Port{6789}
+2024-06-25 17:53:53.014 [Thread-3] INFO  src.main2 - Message sent to IP{127.0.0.1} and Port{6789}
+2024-06-25 17:53:53.014 [Thread-2] INFO  src.main2 - Connection Info: 
+2024-06-25 17:53:53.015 [Thread-2] INFO  src.main2 - Local Address: 127.0.0.1:6789
+2024-06-25 17:53:53.015 [Thread-2] INFO  src.main2 - Remote Address: 127.0.0.1:49338
+2024-06-25 17:53:53.015 [Thread-2] INFO  src.main2 - Protocol: TCP
+2024-06-25 17:53:53.016 [Thread-2] INFO  src.main2 - TCP_KEEPINTERVAL: 75
+2024-06-25 17:53:53.016 [Thread-2] INFO  src.main2 - TCP_KEEPIDLE: 7200
+2024-06-25 17:53:53.016 [Thread-2] INFO  src.main2 - TCP_KEEPCOUNT: 9
+2024-06-25 17:53:53.017 [Thread-2] INFO  src.main2 - TCP_NODELAY: false
+2024-06-25 17:53:53.017 [Thread-2] INFO  src.main2 - SO_KEEPALIVE: false
+2024-06-25 17:53:53.017 [Thread-2] INFO  src.main2 - IP_TOS: 0
+2024-06-25 17:53:53.017 [Thread-2] INFO  src.main2 - SO_OOBINLINE: false
+2024-06-25 17:53:53.018 [Thread-2] INFO  src.main2 - TCP_QUICKACK: true
+2024-06-25 17:53:53.018 [Thread-2] INFO  src.main2 - SO_RCVBUF: 65536
+2024-06-25 17:53:53.018 [Thread-2] INFO  src.main2 - SO_INCOMING_NAPI_ID: 0
+2024-06-25 17:53:53.018 [Thread-2] INFO  src.main2 - SO_LINGER: -1
+2024-06-25 17:53:53.018 [Thread-2] INFO  src.main2 - SO_REUSEPORT: false
+2024-06-25 17:53:53.018 [Thread-2] INFO  src.main2 - SO_REUSEADDR: true
+2024-06-25 17:53:53.019 [Thread-2] INFO  src.main2 - SO_SNDBUF: 1313280
+2024-06-25 17:53:53.019 [Thread-2] INFO  src.main2 - New Connection from 127.0.0.1:49338
+2024-06-25 17:53:53.020 [Thread-2] INFO  src.main2 - forwardPacket from IP: 127.0.0.1 Port: 49338
+2024-06-25 17:53:53.024 [pool-2-thread-1] INFO  src.main2 - Received common header: {"type_id":"2","length":"000161","crc32":"364628030"}
+2024-06-25 17:53:53.025 [pool-2-thread-1] INFO  src.main2 - Received common data: {"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"table":[]}]
+2024-06-25 17:53:53.026 [pool-2-thread-1] INFO  src.main2 - Received data: {"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"table":[]}
+2024-06-25 17:53:53.026 [pool-2-thread-1] INFO  src.main2 - [isChecksumValid] Data to check: {"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"table":[]}
+2024-06-25 17:53:53.026 [pool-2-thread-1] INFO  src.main2 - [isChecksumValid] Calculated checksum: 364628030
+2024-06-25 17:53:53.026 [pool-2-thread-1] INFO  src.main2 - [isChecksumValid] Expected checksum: 364628030
+2024-06-25 17:53:53.027 [pool-2-thread-1] INFO  src.main2 - Received shared header: {"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789}
+2024-06-25 17:53:53.027 [pool-2-thread-1] INFO  src.main2 - Task added to Verwalter_Queue{%s}
+2024-06-25 17:53:53.027 [Thread-1] INFO  src.main2 - Task received in Verwalter{Task{art=CR, jsonData={"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"table":[]}, user=null, message=null, time=0, id=127.0.0.1:49338}}
+2024-06-25 17:53:53.027 [Thread-1] INFO  src.main2 - Handling CR
+2024-06-25 17:53:53.028 [Thread-1] INFO  src.main2 - Fetched own ID
+2024-06-25 17:53:53.028 [Thread-1] INFO  src.main2 - [getCRC32Checksum] input: {"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":49338},"table":[]}
+2024-06-25 17:53:53.029 [Thread-1] INFO  src.main2 - [getCRC32Checksum] Calculated checksum: 77348265
+2024-06-25 17:53:53.029 [Thread-1] INFO  src.main2 - missing length 4crc32: 77348265
+2024-06-25 17:53:53.029 [Thread-1] INFO  src.main2 - length 162
+2024-06-25 17:53:53.029 [Thread-3] INFO  src.main2 - Task received in Sender{Task{art=CRR, jsonData=null, user=null, message=null, time=0, id=127.0.0.1:49338}}
+2024-06-25 17:53:53.030 [Thread-3] INFO  src.main2 - Message sent to IP{127.0.0.1} and Port{49338}
+2024-06-25 17:53:53.030 [Thread-2] INFO  src.main2 - forwardPacket from IP: 127.0.0.1 Port: 6789
+2024-06-25 17:53:53.031 [pool-2-thread-2] INFO  src.main2 - Received common header: {"type_id":"3","length":"0000162","crc32":"77348265"}
+2024-06-25 17:53:53.031 [pool-2-thread-2] INFO  src.main2 - Received common data: {"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":49338},"table":[]}]
+2024-06-25 17:53:53.032 [pool-2-thread-2] INFO  src.main2 - Received data: {"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":49338},"table":[]}
+2024-06-25 17:53:53.032 [pool-2-thread-2] INFO  src.main2 - [isChecksumValid] Data to check: {"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":49338},"table":[]}
+2024-06-25 17:53:53.032 [pool-2-thread-2] INFO  src.main2 - [isChecksumValid] Calculated checksum: 77348265
+2024-06-25 17:53:53.033 [pool-2-thread-2] INFO  src.main2 - [isChecksumValid] Expected checksum: 77348265
+2024-06-25 17:53:53.033 [pool-2-thread-2] INFO  src.main2 - Received shared header: {"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":49338}
+2024-06-25 17:53:53.033 [pool-2-thread-2] INFO  src.main2 - Task added to Verwalter_Queue{%s}
+2024-06-25 17:53:53.033 [Thread-1] INFO  src.main2 - Task received in Verwalter{Task{art=CRR, jsonData={"header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":49338},"table":[]}, user=null, message=null, time=0, id=127.0.0.1:6789}}
+2024-06-25 17:54:05.329 [Thread-4] INFO  src.main2 - Input: smto@127.0.0.1:6789:hallo
+2024-06-25 17:54:05.329 [Thread-4] INFO  src.main2 - Command: smto
+2024-06-25 17:54:05.329 [Thread-4] INFO  src.main2 - IP @cto is: 127.0.0.1
+2024-06-25 17:54:05.330 [Thread-4] INFO  src.main2 - Port @cto is: 6789
+2024-06-25 17:54:05.330 [Thread-4] INFO  src.main2 - Message is: hallo
+2024-06-25 17:54:05.330 [Thread-4] INFO  src.main2 - SEND_MESSAGE_TO Task to Verwalter_Queue
+2024-06-25 17:54:05.331 [Thread-1] INFO  src.main2 - Task received in Verwalter{Task{art=SEND_MESSAGE_TO, jsonData=null, user=null, message=hallo, time=0, id=127.0.0.1:6789}}
+2024-06-25 17:54:05.331 [Thread-1] INFO  src.main2 - Fetched own ID
+2024-06-25 17:54:05.331 [Thread-1] INFO  src.main2 - [getCRC32Checksum] input: {"nickname":"ruben","header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"message":"hallo"}
+2024-06-25 17:54:05.332 [Thread-1] INFO  src.main2 - [getCRC32Checksum] Calculated checksum: 2957100430
+2024-06-25 17:54:05.332 [Thread-1] INFO  src.main2 - missing length 2crc32: 2957100430
+2024-06-25 17:54:05.332 [Thread-1] INFO  src.main2 - length 187
+2024-06-25 17:54:05.332 [Thread-1] INFO  src.main2 - Paket Message created
+2024-06-25 17:54:05.334 [Thread-3] INFO  src.main2 - Task received in Sender{Task{art=MESSAGE, jsonData=null, user=null, message=null, time=0, id=127.0.0.1:6789}}
+2024-06-25 17:54:05.335 [Thread-3] INFO  src.main2 - Message sent to IP{127.0.0.1} and Port{6789}
+2024-06-25 17:54:05.335 [Thread-2] INFO  src.main2 - forwardPacket from IP: 127.0.0.1 Port: 49338
+2024-06-25 17:54:05.336 [pool-2-thread-3] INFO  src.main2 - Received common header: {"type_id":"1","length":"00187","crc32":"2957100430"}
+2024-06-25 17:54:05.337 [pool-2-thread-3] INFO  src.main2 - Received common data: {"nickname":"ruben","header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"message":"hallo"}]
+2024-06-25 17:54:05.337 [pool-2-thread-3] INFO  src.main2 - Received data: {"nickname":"ruben","header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"message":"hallo"}
+2024-06-25 17:54:05.337 [pool-2-thread-3] INFO  src.main2 - [isChecksumValid] Data to check: {"nickname":"ruben","header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"message":"hallo"}
+2024-06-25 17:54:05.337 [pool-2-thread-3] INFO  src.main2 - [isChecksumValid] Calculated checksum: 2957100430
+2024-06-25 17:54:05.337 [pool-2-thread-3] INFO  src.main2 - [isChecksumValid] Expected checksum: 2957100430
+2024-06-25 17:54:05.338 [pool-2-thread-3] INFO  src.main2 - Received shared header: {"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789}
+2024-06-25 17:54:05.338 [pool-2-thread-3] INFO  src.main2 - Task added to UI_Queue{%s}
+2024-06-25 17:54:05.338 [Thread-0] INFO  src.main2 - Task received in UI_Queue_Worker{Task{art=MESSAGE_SELF, jsonData={"nickname":"ruben","header":{"src_ip":"127.0.1.1","src_port":6789,"dest_ip":"127.0.0.1","ttl":16,"dest_port":6789},"message":"hallo"}, user=null, message=null, time=0, id=127.0.0.1:49338}}
+2024-06-25 17:54:05.340 [Thread-0] INFO  src.main2 - Message from: ruben hallo
