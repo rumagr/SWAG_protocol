@@ -1,4 +1,0 @@
-2024-06-22 15:55:06.502 [Thread-0] INFO  src.main2 - Command:cto
-2024-06-22 15:55:06.505 [Thread-0] INFO  src.main2 - IP @cto is: 192.168.255.255
-2024-06-22 15:55:06.505 [Thread-0] ERROR src.main2 - Port @cto is: 8080
-2024-06-22 15:55:06.508 [Thread-0] INFO  src.main2 - SEND_MESSAGE_TO Task to UI_Queue

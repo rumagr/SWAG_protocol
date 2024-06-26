@@ -1,7 +1,0 @@
-2024-06-22 15:41:30.207 [Thread-0] INFO  src.main2 - Command:gcu
-2024-06-22 15:41:30.211 [Thread-0] ERROR src.main2 - GET_CONNECTED_USERS Task to UI_Queue
-2024-06-22 15:42:15.882 [Thread-0] INFO  src.main2 - Command:smto
-2024-06-22 15:42:15.885 [Thread-0] ERROR src.main2 - IP is: 192.168.95.8
-2024-06-22 15:42:15.885 [Thread-0] ERROR src.main2 - Port is: 8080
-2024-06-22 15:42:15.885 [Thread-0] ERROR src.main2 - Message is: Hallo
-2024-06-22 15:42:15.889 [Thread-0] ERROR src.main2 - SEND_MESSAGE_TO Task to UI_Queue
