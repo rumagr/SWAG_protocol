@@ -99,7 +99,7 @@ public class Empfaenger implements Runnable{
         String ip = remoteAddress.getAddress().getHostAddress();
         int port = remoteAddress.getPort();
         // Add the new connection to the connections map for management
-        Verwalter.connections.put(new UniqueIdentifier(ip, port), client);
+        Verwalter.connections.put(new UniqueIdentifier(ip, SERVER_PORT), client);
         // Log the new connection for monitoring purposes
         main2.logger.info(String.format("New Connection from %s:%d", ip, port));
     }
@@ -117,7 +117,7 @@ public class Empfaenger implements Runnable{
         InetSocketAddress remoteAddress = (InetSocketAddress) client.getRemoteAddress();
         String ip = remoteAddress.getAddress().getHostAddress();
         int port = remoteAddress.getPort();
-        UniqueIdentifier uniqueId = new UniqueIdentifier(ip, port);
+        UniqueIdentifier uniqueId = new UniqueIdentifier(ip, SERVER_PORT);
 
         main2.logger.info("forwardPacket from IP: " + ip + " Port: " + port);
         // If no data is read, close the client channel and exit the method
