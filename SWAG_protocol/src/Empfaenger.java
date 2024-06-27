@@ -24,6 +24,7 @@ public class Empfaenger implements Runnable{
     private static final int EXPECTED_DATA_LENGTH = 53;
     private static final int THREAD_POOL_SIZE = 10;
     public static Selector empfaengerSelector;
+    public static final int commonHeaderLength = 53;
 
 
     @Override
@@ -137,14 +138,14 @@ public class Empfaenger implements Runnable{
                 main2.logger.info("Received message: {}", jsonstr);
 
                 //TODO splitting je nach anforderung anpassen
-                String commonHeader = jsonstr.substring(0, 54);
+                String commonHeader = jsonstr.substring(0, commonHeaderLength + 1);
 
                 main2.logger.info("Received common header: {}", commonHeader);
 
                 // Parse the string into a JSON object
                 JSONObject header = new JSONObject(commonHeader);
 
-                String paketData = jsonstr.substring(53, 53 +  header.getInt("length"));
+                String paketData = jsonstr.substring(commonHeaderLength, commonHeaderLength + header.getInt("length"));
                 main2.logger.info("Received common data: {}", paketData);
 
 
