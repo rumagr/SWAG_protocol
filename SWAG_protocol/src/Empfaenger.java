@@ -136,14 +136,15 @@ public class Empfaenger implements Runnable{
 
                 main2.logger.info("Received message: {}", jsonstr);
 
-                String commonHeader = jsonstr.substring(1, 54);
+                //TODO splitting je nach anforderung anpassen
+                String commonHeader = jsonstr.substring(0, 54);
 
                 main2.logger.info("Received common header: {}", commonHeader);
 
                 // Parse the string into a JSON object
                 JSONObject header = new JSONObject(commonHeader);
 
-                String paketData = jsonstr.substring(55, header.getInt("length")+3);
+                String paketData = jsonstr.substring(53, 53 +  header.getInt("length"));
                 main2.logger.info("Received common data: {}", paketData);
 
 

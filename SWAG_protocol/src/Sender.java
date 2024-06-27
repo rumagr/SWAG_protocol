@@ -44,6 +44,8 @@ public class Sender implements Runnable {
 
     private void handleTask(Task t) {
         JSONArray jsonPacket = t.getJsonPacket();
+
+        String packet = jsonPacket.getJSONObject(0).toString() + jsonPacket.getJSONObject(1).toString();
         UniqueIdentifier id = new UniqueIdentifier(t.getId().getIP(), Empfaenger.SERVER_PORT);
 
         SocketChannel socketChannel = Verwalter.connections.get(id);
@@ -66,10 +68,10 @@ public class Sender implements Runnable {
                 main2.logger.error("Exception while creating SocketChannel", e);
             }
         }
-        ByteBuffer buffer = ByteBuffer.wrap(jsonPacket.toString().getBytes());
+        ByteBuffer buffer = ByteBuffer.wrap(packet.getBytes());
         try {
             socketChannel.write(buffer);
-            main2.logger.info("Message sent to IP{" + id.getIP() + "} and Port{" + id.getPort() + "}");
+            main2.logger.info("Sending packet: " + packet + " to IP{" + id.getIP() + "} and Port{" + id.getPort() + "}");
         } catch (IOException e) {
             main2.logger.error("Exception while writing to SocketChannel", e);
         }

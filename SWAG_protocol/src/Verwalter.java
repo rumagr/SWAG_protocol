@@ -313,18 +313,18 @@ public class Verwalter implements Runnable
     {
         JSONObject header = new JSONObject();
 
-        String length = (data.toString().length() + 53)  + "";
+        String length = data.toString().length()  + "";
 
         String crc32 = CRC32Check.getCRC32Checksum(data.toString()) + "";
 
-        int missinglength = 16 - crc32.length() - length.length() -1;
-
-        main2.logger.info("missing length " + missinglength + "crc32: " + crc32);
-        main2.logger.info("length " + length);
-
-        for(int i = 0; i < missinglength; i++)
+        for(int i = 0; i < (6 - length.length()); i++)
         {
             length = "0" + length;
+        }
+
+        for(int i = 0; i < (10 - crc32.length()); i++)
+        {
+            crc32 = "0" + crc32;
         }
 
         header.put("length", length);
@@ -357,8 +357,8 @@ public class Verwalter implements Runnable
 
         JSONObject header = new JSONObject();
 
-        header.put("src_ip", src_ip);
-        header.put("src_port", src_port);
+        header.put("source_ip", src_ip);
+        header.put("source_port", src_port);
         header.put("dest_ip", dest_ip);
         header.put("dest_port", dest_port);
         header.put("ttl", ttl);
