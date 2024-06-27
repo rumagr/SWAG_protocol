@@ -174,7 +174,6 @@ public class Empfaenger implements Runnable{
                         String ipAddress = NetworkUtils.getFirstNonLoopbackAddress(true);
 
                         main2.logger.info("Local IP: {}", ipAddress);
-                        System.out.println("Local IP: " + ipAddress);
 
                         // Compare the destination IP in the shared header with the local IP
                         if(sharedHeader.getString("dest_ip").equals(ipAddress) || sharedHeader.getString("dest_ip").equals("127.0.0.1"))
@@ -194,7 +193,7 @@ public class Empfaenger implements Runnable{
                 }
 
                 // Create a new task with the determined task type and JSON object
-                Task t = new Task(ta, data, new UniqueIdentifier(ip, port));
+                Task t = new Task(ta, data, new UniqueIdentifier(ip, sharedHeader.getInt("dest_port")));
 
                 // Add the task to the appropriate queue based on the task type
                 if(TaskArt.MESSAGE_SELF == ta)

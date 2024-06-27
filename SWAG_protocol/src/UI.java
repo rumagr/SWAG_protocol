@@ -46,6 +46,7 @@ public class UI implements Runnable {
             main2.logger.error("Error while getting IP address", e);
         }
         System.out.println("IP Addresse: " + ipAddress);
+        System.out.println("Port: " + Empfaenger.SERVER_PORT);
         System.out.println("Bitte einen Nickname eingeben: ");
 
         this.nickname = scanner.nextLine();
@@ -208,10 +209,10 @@ public class UI implements Runnable {
         //Message ausgeben (von wem anders an mich)
         private void messageSelf(Task t) {
             JSONObject body = t.getJsonData();
-            System.out.println(String.format("Message from: %s %s", body.getString("nickname"), body.getString("message")));
-            main2.logger.info(String.format("Message from: %s %s", body.getString("nickname"), body.getString("message")));
+            System.out.println(String.format("Message from %s: %s", body.getString("nickname"), body.getString("message")));
+            main2.logger.info(String.format("Message from %s: %s", body.getString("nickname"), body.getString("message")));
         }
-        //Paket wird analsiert und ich kriege es, quasi zurück
+        //Paket wird analsiert und ich kriege es, quasi zurück                        System.out.println("Local IP: " + ipAddress);
         private void connectedUsers(Task t) {
             //hier Routing Tabelle ausgeben
             List<UniqueIdentifier> users = t.getUser();

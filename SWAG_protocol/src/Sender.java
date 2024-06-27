@@ -54,8 +54,8 @@ public class Sender implements Runnable {
 
             try {
                 //TODO weiß auch nicht
-                main2.logger.info("Creating new SocketChannel with IP{" + id.getIP() + "} and Port{" + id.getPort() + "}");
-                socketChannel = SocketChannel.open(new InetSocketAddress(id.getIP(), id.getPort()));
+                main2.logger.info("Creating new SocketChannel with IP{" + id.getIP() + "} and Port{" + t.getId().getPort() + "}");
+                socketChannel = SocketChannel.open(new InetSocketAddress(id.getIP(), t.getId().getPort()));
 
                 socketChannel.configureBlocking(false);
                 socketChannel.register(Empfaenger.empfaengerSelector, SelectionKey.OP_READ);
