@@ -227,12 +227,14 @@ public class Verwalter implements Runnable
     private void handleTableUpdateExpired(Task t) {
         // starte Timer fuer alle Eintraege in der RoutingTable
 
+        main2.logger.info("Table update timer handling started");
         //counter for keeping track of the missing number of responses
         refreshCounter = routingTabelle.getAllNextUniqueIds().size();
 
         for (UniqueIdentifier id : routingTabelle.getAllNextUniqueIds()) {
             try {
                 ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_START, 1000L, id));
+                sendSCC(id);
             } catch (InterruptedException e) {
                 main2.logger.error("Exception in handleTableUpdateExpired", e);
             }
@@ -445,6 +447,11 @@ public class Verwalter implements Runnable
     private void sendSCC(UniqueIdentifier id)
     {
         JSONObject data = new JSONObject();
+
+        JSONObject sharedHeader = buildSharedHeader(id);
+
+        data.put("header", sharedHeader);
+
         JSONObject header = buildCommonHeader(data, 4);
 
         JSONArray paket = new JSONArray();
@@ -453,6 +460,7 @@ public class Verwalter implements Runnable
 
         try {
             Sender.Sender_Queue.put(new Task(TaskArt.SCC, paket, id));
+            main2.logger.info("SCC sent with data " + data.toString());
         }
         catch (InterruptedException e) {
             main2.logger.error("Exception in sendSCC", e);
@@ -462,6 +470,9 @@ public class Verwalter implements Runnable
     private void sendSCCR(UniqueIdentifier id)
     {
         JSONObject data = new JSONObject();
+
+        data.put("header", buildSharedHeader(id));
+
         JSONObject header = buildCommonHeader(data, 5);
 
         JSONArray paket = new JSONArray();

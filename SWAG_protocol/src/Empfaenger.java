@@ -134,7 +134,7 @@ public class Empfaenger implements Runnable{
                 // Convert the buffer's data to a string representation
                 String jsonstr = new String(buffer.array(), StandardCharsets.UTF_8);
 
-                //main2.logger.info("Received message: {}", jsonstr);
+                main2.logger.info("Received message: {}", jsonstr);
 
                 String commonHeader = jsonstr.substring(1, 54);
 
