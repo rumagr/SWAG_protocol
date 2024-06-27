@@ -360,7 +360,7 @@ public class Verwalter implements Runnable
         header.put("dest_ip", dest_ip);
         header.put("dest_port", dest_port);
         header.put("ttl", ttl);
-
+        //TODO hier mal loggen
         return header;
     }
 
