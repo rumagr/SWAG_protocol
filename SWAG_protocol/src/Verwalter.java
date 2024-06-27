@@ -24,7 +24,7 @@ public class Verwalter implements Runnable
        // erstelleRoutingTable();
         long delay = 10000L;
         try {
-            ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_TABLE_UPDATE_EXPIRED, delay, null));
+            ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_TABLE_UPDATE_START, delay, new UniqueIdentifier("", 0)));
         } catch (InterruptedException e) {
             main2.logger.error("Exception in Verwalter", e);
         }

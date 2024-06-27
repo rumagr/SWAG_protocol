@@ -16,19 +16,19 @@ public class main2 {
         Verwalter verwalter = new Verwalter();
         Empfaenger empfaenger = new Empfaenger();
         Sender sender = new Sender();
-        //ProtokollTimer protokollTimer = new ProtokollTimer();
+        ProtokollTimer protokollTimer = new ProtokollTimer();
 
         Thread t1 = new Thread(verwalter);
         Thread t2 = new Thread(empfaenger);
         Thread t3 = new Thread(sender);
-        //Thread t4 = new Thread(protokollTimer);
+        Thread t4 = new Thread(protokollTimer);
         Thread t = new Thread(ui);
 
         t.start();
         t1.start();
         t2.start();
         t3.start();
-        //t4.start();
+        t4.start();
     }
 
 }
