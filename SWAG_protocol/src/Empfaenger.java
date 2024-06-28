@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Empfaenger implements Runnable{
-    public static final int SERVER_PORT = 6789;
+    public static int SERVER_PORT = 6789;
     private static final int BUFFER_SIZE = 1024;
     private static final int EXPECTED_DATA_LENGTH = 53;
     private static final int THREAD_POOL_SIZE = 10;
@@ -29,9 +29,15 @@ public class Empfaenger implements Runnable{
 
     @Override
     public void run() {
-        int port = SERVER_PORT;
         // Initialize the executor service with a fixed thread pool size
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+
+        while(!portIsAvailable(SERVER_PORT))
+        {
+            SERVER_PORT++;
+        }
+
+        main2.logger.info("Port: " + SERVER_PORT);
 
         try (Selector selector = Selector.open();
              ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
@@ -39,14 +45,14 @@ public class Empfaenger implements Runnable{
             empfaengerSelector = selector;
 
             // Bind the server socket channel to the specified port
-            serverSocketChannel.bind(new InetSocketAddress(port));
+            serverSocketChannel.bind(new InetSocketAddress(SERVER_PORT));
             // Configure the server socket to non-blocking mode
             serverSocketChannel.configureBlocking(false);
             // Register the server socket channel with the selector for accept operations
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
             // Log the start of the server
-            main2.logger.info("Server gestartet auf Port {}", port);
+            main2.logger.info("Server gestartet auf Port {}", SERVER_PORT);
 
             // Continuously handle incoming connections and data
             while (true) {
@@ -96,13 +102,13 @@ public class Empfaenger implements Runnable{
         logSocketInfo(client);
 
         // Retrieve IP and port from the client's remote address
-        InetSocketAddress remoteAddress = (InetSocketAddress) client.getRemoteAddress();
-        String ip = remoteAddress.getAddress().getHostAddress();
-        int port = remoteAddress.getPort();
+    //    InetSocketAddress remoteAddress = (InetSocketAddress) client.getRemoteAddress();
+    //    String ip = remoteAddress.getAddress().getHostAddress();
+    //    int port = remoteAddress.getPort();
         // Add the new connection to the connections map for management
-        Verwalter.connections.put(new UniqueIdentifier(ip, SERVER_PORT), client);
+    //    Verwalter.connections.put(new UniqueIdentifier(ip, SERVER_PORT), client);
         // Log the new connection for monitoring purposes
-        main2.logger.info(String.format("New Connection from %s:%d", ip, port));
+    //    main2.logger.info(String.format("New Connection from %s:%d", ip, port));
     }
 
     private static void forwardPacket(ExecutorService executorService, SelectionKey key) throws IOException {
@@ -178,7 +184,9 @@ public class Empfaenger implements Runnable{
                         main2.logger.info("Local IP: {}", ipAddress);
 
                         // Compare the destination IP in the shared header with the local IP
-                        if(sharedHeader.getString("dest_ip").equals(ipAddress) || sharedHeader.getString("dest_ip").equals("127.0.0.1"))
+                        if((sharedHeader.getString("dest_ip").equals(ipAddress) ||
+                                sharedHeader.getString("dest_ip").equals("127.0.0.1"))
+                                && sharedHeader.getInt("dest_port") == SERVER_PORT)
                         {
                             // If the IPs match, set the task type to MESSAGE_SELF
                             ta = TaskArt.MESSAGE_SELF;
@@ -195,7 +203,7 @@ public class Empfaenger implements Runnable{
                 }
 
                 // Create a new task with the determined task type and JSON object
-                Task t = new Task(ta, data, new UniqueIdentifier(ip, sharedHeader.getInt("dest_port")));
+                Task t = new Task(ta, data, new UniqueIdentifier(ip, sharedHeader.getInt("dest_port")),client, sharedHeader.getInt("source_port"));
 
                 // Add the task to the appropriate queue based on the task type
                 if(TaskArt.MESSAGE_SELF == ta)
@@ -257,6 +265,15 @@ public class Empfaenger implements Runnable{
         // Hier können Sie zusätzliche Socket-Optionen loggen
         for (SocketOption<?> option : socketChannel.supportedOptions()) {
             main2.logger.info("{}: {}", option.name(), socketChannel.getOption(option));
+        }
+    }
+
+    private boolean portIsAvailable(int port) {
+        try (ServerSocketChannel serverSocketChannel = ServerSocketChannel.open()) {
+            serverSocketChannel.bind(new InetSocketAddress(port));
+            return true;
+        } catch (IOException e) {
+            return false;
         }
     }
 }

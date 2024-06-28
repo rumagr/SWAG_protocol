@@ -46,7 +46,7 @@ public class Sender implements Runnable {
         JSONArray jsonPacket = t.getJsonPacket();
 
         String packet = jsonPacket.getJSONObject(0).toString() + jsonPacket.getJSONObject(1).toString();
-        UniqueIdentifier id = new UniqueIdentifier(t.getId().getIP(), Empfaenger.SERVER_PORT);
+        UniqueIdentifier id = new UniqueIdentifier(t.getId().getIP(), t.getId().getPort());
 
         SocketChannel socketChannel = Verwalter.connections.get(id);
 

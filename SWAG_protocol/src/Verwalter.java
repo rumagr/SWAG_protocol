@@ -103,9 +103,13 @@ public class Verwalter implements Runnable
         //Verarbeite RouringTable und sende CCR
         main2.logger.info("Handling CR");
 
-        RoutingEntry newEntry = new RoutingEntry(t.getId().getIP(), t.getId().getPort(), t.getId().getIP(), t.getId().getPort(), 1);
+        connections.put(new UniqueIdentifier(t.getId().getIP(), t.getSourcePort()), t.getSocketChannel());
+
+        RoutingEntry newEntry = new RoutingEntry(t.getId().getIP(), t.getSourcePort(), t.getId().getIP(), t.getSourcePort(), 1);
 
         routingTabelle.addEntry(newEntry);
+
+        main2.logger.info("Entry added to RoutingTable " + newEntry.toString());
 
         JSONObject data = t.getJsonData();
 
@@ -114,13 +118,13 @@ public class Verwalter implements Runnable
         routingTabelle.updateRoutingTable(table);
 
         //sende CRR
-        sendCRR(t.getId());
+        sendCRR(new UniqueIdentifier(t.getId().getIP(), t.getSourcePort()));
     }
 
     private void handleCRR(Task t) {
         //update RoutingTable
 
-        RoutingEntry newEntry = new RoutingEntry(t.getId().getIP(), t.getId().getPort(), t.getId().getIP(), t.getId().getPort(), 1);
+        RoutingEntry newEntry = new RoutingEntry(t.getId().getIP(), t.getSourcePort(), t.getId().getIP(), t.getSourcePort(), 1);
 
         routingTabelle.addEntry(newEntry);
 
@@ -133,14 +137,14 @@ public class Verwalter implements Runnable
 
     private void handleSCC(Task t) {
         //antworte mit SCCR
-        sendSCCR(t.getId());
+        sendSCCR(new UniqueIdentifier(t.getId().getIP(), t.getSourcePort()));
     }
 
     private void handleSCCR(Task t) {
 
         //stoppe den Timer fuer den Knoten
         try {
-            ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_STOP, t.getId()));
+            ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_STOP, new UniqueIdentifier(t.getId().getIP(), t.getSourcePort())));
         } catch (InterruptedException e) {
             main2.logger.error("Exception in handleSCCR", e);
         }
@@ -322,7 +326,7 @@ public class Verwalter implements Runnable
             length = "0" + length;
         }
 
-        for(int i = 0; i < (10 - crc32.length()); i++)
+        for(int i = crc32.length(); i < 10 ; i++)
         {
             crc32 = "0" + crc32;
         }

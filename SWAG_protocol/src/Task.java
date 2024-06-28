@@ -3,6 +3,8 @@ package src;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.Socket;
+import java.nio.channels.SocketChannel;
 import java.util.List;
 
 public class Task {
@@ -22,8 +24,23 @@ public class Task {
     //braucht man eigentkich überall
     private String nickname;
 
+    private SocketChannel socketChannel;
+
+    private int sourcePort;
+
 
     //von Empfaenger an Verwalter/UI
+    public Task(TaskArt art, JSONObject jsonData, UniqueIdentifier id, SocketChannel SocketChannel, int sourcePort) {
+        this.art = art;
+        this.jsonData = jsonData;
+        this.user = null;
+        this.message = null;
+        this.time = 0;
+        this.id = id;
+        this.socketChannel = SocketChannel;
+        this.sourcePort = sourcePort;
+    }
+
     public Task(TaskArt art, JSONObject jsonData, UniqueIdentifier id) {
         this.art = art;
         this.jsonData = jsonData;
@@ -127,6 +144,14 @@ public class Task {
 
     public JSONArray getJsonPacket() {
         return jsonPacket;
+    }
+
+    public SocketChannel getSocketChannel() {
+        return socketChannel;
+    }
+
+    public int getSourcePort() {
+        return sourcePort;
     }
 
     public String toString() {
