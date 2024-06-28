@@ -80,6 +80,9 @@ public class Verwalter implements Runnable
             case GET_CONNECTED_USERS:
                 handleGET_CONNECTED_USERS(t);
                 break;
+            case EXIT:
+                handleEXIT();
+                break;
             default:
                 main2.logger.error("Unknown TaskArt");
                 throw new IllegalArgumentException("Unknown TaskArt");
@@ -506,6 +509,29 @@ public class Verwalter implements Runnable
         catch (InterruptedException e) {
             main2.logger.error("Exception in sendSTU", e);
         }
+    }
+
+    public void handleEXIT()
+    {
+        //sende EXIT an alle next in RoutingTable
+        routingTabelle.markALlAsDead();
+        for(UniqueIdentifier id : routingTabelle.getAllNextUniqueIds()) {
+            sendSTU(id);
+        }
+        while(!Sender.Sender_Queue.isEmpty())
+        {
+            try {
+                Thread.sleep(250);
+            } catch (InterruptedException e) {
+                main2.logger.error("Exception in handleEXIT", e);
+            }
+        }
+
+        exitProgram();
+    }
+
+    private void exitProgram() {
+        System.exit(0);
     }
 
 }

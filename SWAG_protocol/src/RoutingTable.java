@@ -109,5 +109,9 @@ public class RoutingTable {
             }
         }
     }
+
+    public void markALlAsDead() {
+        entries.forEach(entry -> entry.setHopCount(32));
+    }
     // Additional methods can be implemented as needed, such as updating an entry, listing all entries, etc.
 }

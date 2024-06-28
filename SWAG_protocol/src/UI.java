@@ -53,12 +53,12 @@ public class UI implements Runnable {
 
         while (true) {
             System.out.println("Bitte einen Command eingeben: ");
-            System.out.println("Die Commands sind: cto@ip:port, smto@ip:port:message, gcu");
+            System.out.println("Die Commands sind: cto@ip:port, smto@ip:port:message, gcu, exit");
             String input = scanner.nextLine();
 
             main2.logger.info(String.format("Input: %s", input));
 
-            if (input.matches(isMessage)) {
+            if (input.matches(isMessage) || input.equals("exit")) {
                 String[] fullcommand = input.split("@");
 
                 String command = fullcommand[0];
@@ -76,6 +76,8 @@ public class UI implements Runnable {
                     case "gcu":
                         getConnectedUsers();
                         break;
+                    case "exit":
+                        sendExitToManagement();
                     default:
                         main2.logger.error("Invalid commmand at switch statement");
                         //throw new IllegalArgumentException("Invalid command");
@@ -84,7 +86,7 @@ public class UI implements Runnable {
             else
             {
                 main2.logger.error("Invalid commmand");
-                //throw new IllegalArgumentException("Invalid command");
+                System.out.println("Invalid command. Please try again.");
             }
 
         }
@@ -222,6 +224,12 @@ public class UI implements Runnable {
                 System.out.println(user.toString());
             }
         }
+    }
+
+    private void sendExitToManagement()
+    {
+        Task t = new Task(TaskArt.EXIT);
+        Verwalter.Verwalter_Queue.add(t);
     }
 }
 
