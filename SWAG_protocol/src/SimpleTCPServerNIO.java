@@ -93,6 +93,8 @@ public class SimpleTCPServerNIO implements Runnable{
             String jsonstr = new String(buffer.array(), StandardCharsets.UTF_8);
             //System.out.println(jsonstr);
             JSONObject j = new JSONObject(jsonstr);
+
+
             System.out.println(j.get("message").toString());
             buffer.clear();
 

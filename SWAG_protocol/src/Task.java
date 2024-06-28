@@ -1,35 +1,60 @@
 package src;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.Socket;
+import java.nio.channels.SocketChannel;
 import java.util.List;
 
 public class Task {
     private TaskArt art;
-    //von Empfaenger an Verwalter/UI und von Verwalter an Sender
+    //von Empfaenger an Verwalter/UI
     private JSONObject jsonData;
+    //von Verwalter an Sender
+    private JSONArray jsonPacket;
     //an UI von Verwalter
     private List<UniqueIdentifier> user;
     //an Verwalter von UI
     private String message;
-    //an Timer von Verwaltung
-    private int time;
-    //an Timer/Verwalter von Timer/UI
+    //an ProtokollTimer von Verwaltung
+    private long time;
+    //an ProtokollTimer/Verwalter von ProtokollTimer/UI
     private UniqueIdentifier id;
+    //braucht man eigentkich überall
+    private String nickname;
+
+    private SocketChannel socketChannel;
+
+    private int sourcePort;
+
+    private String sourceIp;
 
 
     //von Empfaenger an Verwalter/UI
-    public Task(TaskArt art, JSONObject jsonData) {
+    public Task(TaskArt art, JSONObject jsonData, UniqueIdentifier id, SocketChannel SocketChannel, int sourcePort) {
         this.art = art;
         this.jsonData = jsonData;
         this.user = null;
         this.message = null;
         this.time = 0;
-        this.id = null;
+        this.id = id;
+        this.socketChannel = SocketChannel;
+        this.sourcePort = sourcePort;
+    }
+
+    public Task(TaskArt art, JSONObject jsonData, UniqueIdentifier id) {
+        this.art = art;
+        this.jsonData = jsonData;
+        this.user = null;
+        this.message = null;
+        this.time = 0;
+        this.id = id;
     }
 
     //von UI an Verwaltung (sende an)
-    public Task(TaskArt art, String message, UniqueIdentifier id) {
+    public Task(TaskArt art, String message, UniqueIdentifier id, String nickname){
+        this.nickname = nickname;
         this.art = art;
         this.jsonData = null;
         this.user = null;
@@ -50,8 +75,8 @@ public class Task {
 
 
     //von UI an Verwaltung (verbinde mit user)
-    //von Verwalter an Timer (stoppe Timer)
-    //von Timer an Verwalter (Timer abgelaufen)
+    //von Verwalter an ProtokollTimer (stoppe ProtokollTimer)
+    //von ProtokollTimer an Verwalter (ProtokollTimer abgelaufen)
     public Task(TaskArt art, UniqueIdentifier id) {
         this.art = art;
         this.jsonData = null;
@@ -61,8 +86,8 @@ public class Task {
         this.id = id;
     }
 
-    //von Verwalter an Timer (starte Timer)
-    public Task(TaskArt art, int time, UniqueIdentifier id) {
+    //von Verwalter an ProtokollTimer (starte ProtokollTimer)
+    public Task(TaskArt art, long time, UniqueIdentifier id) {
         this.art = art;
         this.jsonData = null;
         this.user = null;
@@ -82,13 +107,29 @@ public class Task {
     }
 
     //von Verwaltung an Sender
-    public Task(TaskArt art, JSONObject jsonData, UniqueIdentifier id) {
+    public Task(TaskArt art, JSONArray jsonPacket, UniqueIdentifier id) {
         this.art = art;
-        this.jsonData = jsonData;
+        this.jsonPacket = jsonPacket;
         this.user = null;
         this.message = null;
         this.time = 0;
         this.id = id;
+    }
+
+    public Task(TaskArt ta, JSONObject data, UniqueIdentifier destPort, SocketChannel client, String sourceIp, int sourcePort) {
+        this.art = ta;
+        this.jsonData = data;
+        this.user = null;
+        this.message = null;
+        this.time = 0;
+        this.id = destPort;
+        this.socketChannel = client;
+        this.sourcePort = sourcePort;
+        this.sourceIp = sourceIp;
+    }
+
+    public String getSourceIp() {
+        return sourceIp;
     }
 
     public TaskArt getArt() {
@@ -107,11 +148,31 @@ public class Task {
         return message;
     }
 
-    public int getTime() {
+    public long getTime() {
         return time;
     }
 
     public UniqueIdentifier getId() {
         return id;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public JSONArray getJsonPacket() {
+        return jsonPacket;
+    }
+
+    public SocketChannel getSocketChannel() {
+        return socketChannel;
+    }
+
+    public int getSourcePort() {
+        return sourcePort;
+    }
+
+    public String toString() {
+        return String.format("Task{art=%s, jsonData=%s, jsonPacket=%s, user=%s, message=%s, time=%d, id=%s}", art, jsonData,jsonPacket, user, message, time, id);
     }
 }
