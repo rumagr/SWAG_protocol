@@ -1,7 +1,9 @@
 package src;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.Configurator;
 
 import java.io.*;
 
@@ -12,6 +14,8 @@ public class main2 {
 
     public static void main(String[] args)
 {
+        //Configurator.setLevel(main2.class.getName(), Level.OFF);
+
         UI ui = new UI();
         Verwalter verwalter = new Verwalter();
         Empfaenger empfaenger = new Empfaenger();

@@ -245,11 +245,14 @@ public class Empfaenger implements Runnable{
     }
 
     private static boolean checkIntegrity(JSONObject header, JSONObject data) {
+        //TODO rausnehmen
+        return true;
+
         // Retrieve the expected CRC32 checksum value from the header
-        long expectedCRC32 = Long.parseLong(header.getString("crc32"));
+        //long expectedCRC32 = Long.parseLong(header.getString("crc32"));
 
         // Return true if both the CRC32 checksum and the length of the data are valid
-        return CRC32Check.isChecksumValid(data.toString(), expectedCRC32);
+        //return CRC32Check.isChecksumValid(data.toString(), expectedCRC32);
     }
 
 

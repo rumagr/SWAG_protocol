@@ -64,7 +64,7 @@ public class Sender implements Runnable {
                 Empfaenger.empfaengerSelector.wakeup();
                 Verwalter.connections.put(id,socketChannel);
             }
-            catch (IOException e) {
+            catch (Exception e) {
                 main2.logger.error("Exception while creating SocketChannel", e);
             }
         }

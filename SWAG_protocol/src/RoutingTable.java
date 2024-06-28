@@ -93,11 +93,11 @@ public class RoutingTable {
     public void updateRoutingTable(JSONArray otherTable, String sourceIp, int sourcePort) {
         for (int i = 0; i < otherTable.length(); i++) {
             //get entries from other table
-            String targetIp = otherTable.getJSONObject(i).getString("targetIp");
-            int targetPort = otherTable.getJSONObject(i).getInt("targetPort");
+            String targetIp = otherTable.getJSONObject(i).getString("target_ip");
+            int targetPort = otherTable.getJSONObject(i).getInt("target_port");
             String nextIp = sourceIp;
             int nextPort = sourcePort;
-            int hopCount = otherTable.getJSONObject(i).getInt("hopCount") + 1;
+            int hopCount = otherTable.getJSONObject(i).getInt("hop_count") + 1;
 
             //check if there was a poison reverse or if there is a lower hop count
             RoutingEntry entry = getEntry(targetIp, targetPort, nextIp, nextPort);

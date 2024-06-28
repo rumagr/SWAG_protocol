@@ -55,11 +55,11 @@ public class RoutingEntry {
     @Override
     public String toString() {
         return "RoutingEntry{" +
-                "targetIp='" + targetIp + '\'' +
-                ", targetPort=" + targetPort +
-                ", nextIp='" + nextIp + '\'' +
-                ", nextPort=" + nextPort +
-                ", hopCount=" + hopCount +
+                "target_ip='" + targetIp + '\'' +
+                ", target_port=" + targetPort +
+                ", next_ip='" + nextIp + '\'' +
+                ", next_port=" + nextPort +
+                ", hop_count=" + hopCount +
                 '}';
 
     }
