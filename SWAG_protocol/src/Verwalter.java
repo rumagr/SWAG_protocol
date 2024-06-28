@@ -62,7 +62,7 @@ public class Verwalter implements Runnable
             case STU:
                 handleSTU(t);
                 break;
-            case MESSAGE:
+            case MESSAGE_OTHERS:
                 handleMessage(t);
                 break;
             case TIMER_TABLE_UPDATE_EXPIRED:
@@ -118,7 +118,7 @@ public class Verwalter implements Runnable
 
         JSONArray table = (JSONArray) data.get("table");
 
-        routingTabelle.updateRoutingTable(table);
+        routingTabelle.updateRoutingTable(table, t.getSourceIp(), t.getSourcePort());
 
         //sende CRR
         sendCRR(new UniqueIdentifier(t.getId().getIP(), t.getSourcePort()));
@@ -135,7 +135,7 @@ public class Verwalter implements Runnable
 
         JSONArray table = (JSONArray) data.get("table");
 
-        routingTabelle.updateRoutingTable(table);
+        routingTabelle.updateRoutingTable(table, t.getSourceIp(), t.getSourcePort());
     }
 
     private void handleSCC(Task t) {
@@ -153,6 +153,7 @@ public class Verwalter implements Runnable
         }
 
         //keep counter up to date
+        refreshCounter--;
         refreshCounter--;
 
         if(!(refreshCounter > 0))
@@ -172,7 +173,7 @@ public class Verwalter implements Runnable
 
         JSONArray table = (JSONArray) data.get("table");
 
-        routingTabelle.updateRoutingTable(table);
+        routingTabelle.updateRoutingTable(table, t.getSourceIp(), t.getSourcePort());
     }
 
     private void handleMessage(Task t) {
@@ -521,7 +522,7 @@ public class Verwalter implements Runnable
         while(!Sender.Sender_Queue.isEmpty())
         {
             try {
-                Thread.sleep(250);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 main2.logger.error("Exception in handleEXIT", e);
             }

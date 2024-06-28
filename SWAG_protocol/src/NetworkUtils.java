@@ -20,7 +20,7 @@ public class NetworkUtils {
                 for (InetAddress addr : Collections.list(addresses)) {
                     // Check for IPv4 address if preferred.
 
-                    main2.logger.info("IP: " + addr.getHostAddress());
+                    //main2.logger.info("IP: " + addr.getHostAddress());
 
                     if (preferIpv4 && addr instanceof Inet4Address) {
                         return addr.getHostAddress();

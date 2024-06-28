@@ -28,6 +28,8 @@ public class Task {
 
     private int sourcePort;
 
+    private String sourceIp;
+
 
     //von Empfaenger an Verwalter/UI
     public Task(TaskArt art, JSONObject jsonData, UniqueIdentifier id, SocketChannel SocketChannel, int sourcePort) {
@@ -112,6 +114,22 @@ public class Task {
         this.message = null;
         this.time = 0;
         this.id = id;
+    }
+
+    public Task(TaskArt ta, JSONObject data, UniqueIdentifier destPort, SocketChannel client, String sourceIp, int sourcePort) {
+        this.art = ta;
+        this.jsonData = data;
+        this.user = null;
+        this.message = null;
+        this.time = 0;
+        this.id = destPort;
+        this.socketChannel = client;
+        this.sourcePort = sourcePort;
+        this.sourceIp = sourceIp;
+    }
+
+    public String getSourceIp() {
+        return sourceIp;
     }
 
     public TaskArt getArt() {

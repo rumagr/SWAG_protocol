@@ -50,7 +50,7 @@ public class RoutingTable {
     public List<UniqueIdentifier> getAllConectedUniqueIds() {
         List<UniqueIdentifier> uniqueIds = new ArrayList<>();
         for (RoutingEntry entry : entries) {
-            UniqueIdentifier newId = new UniqueIdentifier(entry.getNextIp(), entry.getNextPort());
+            UniqueIdentifier newId = new UniqueIdentifier(entry.getTargetIp(), entry.getTargetPort());
             if ((!uniqueIds.contains(newId)) && (entry.getHopCount() != 32)) {
                 uniqueIds.add(newId);
             }
@@ -87,14 +87,14 @@ public class RoutingTable {
                 .orElse(null);
     }
 
-    public void updateRoutingTable(JSONArray otherTable) {
+    public void updateRoutingTable(JSONArray otherTable, String sourceIp, int sourcePort) {
         for (int i = 0; i < otherTable.length(); i++) {
             //get entries from other table
             String targetIp = otherTable.getJSONObject(i).getString("targetIp");
             int targetPort = otherTable.getJSONObject(i).getInt("targetPort");
-            String nextIp = otherTable.getJSONObject(i).getString("nextIp");
-            int nextPort = otherTable.getJSONObject(i).getInt("nextPort");
-            int hopCount = otherTable.getJSONObject(i).getInt("hopCount");
+            String nextIp = sourceIp;
+            int nextPort = sourcePort;
+            int hopCount = otherTable.getJSONObject(i).getInt("hopCount") + 1;
 
             //check if there was a poison reverse or if there is a lower hop count
             RoutingEntry entry = getEntry(targetIp, targetPort, nextIp, nextPort);
