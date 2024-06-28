@@ -141,7 +141,7 @@ public class Empfaenger implements Runnable{
                 // Convert the buffer's data to a string representation
                 String jsonstr = new String(buffer.array(), StandardCharsets.UTF_8);
 
-                main2.logger.info("Received message: {}", jsonstr);
+//                main2.logger.info("Received message: {}", jsonstr);
 
                 //TODO splitting je nach anforderung anpassen
                 String commonHeader = jsonstr.substring(0, commonHeaderLength + 1);
@@ -152,7 +152,7 @@ public class Empfaenger implements Runnable{
                 JSONObject header = new JSONObject(commonHeader);
 
                 String paketData = jsonstr.substring(commonHeaderLength, commonHeaderLength + header.getInt("length"));
-                main2.logger.info("Received common data: {}", paketData);
+//                main2.logger.info("Received common data: {}", paketData);
 
 
                 JSONObject data = new JSONObject(paketData);
@@ -257,14 +257,14 @@ public class Empfaenger implements Runnable{
         InetSocketAddress localAddress = (InetSocketAddress) socketChannel.getLocalAddress();
         InetSocketAddress remoteAddress = (InetSocketAddress) socketChannel.getRemoteAddress();
 
-        main2.logger.info("Connection Info: ");
-        main2.logger.info("Local Address: {}:{}", localAddress.getAddress().getHostAddress(), localAddress.getPort());
-        main2.logger.info("Remote Address: {}:{}", remoteAddress.getAddress().getHostAddress(), remoteAddress.getPort());
-        main2.logger.info("Protocol: TCP");
+//        main2.logger.info("Connection Info: ");
+//        main2.logger.info("Local Address: {}:{}", localAddress.getAddress().getHostAddress(), localAddress.getPort());
+//        main2.logger.info("Remote Address: {}:{}", remoteAddress.getAddress().getHostAddress(), remoteAddress.getPort());
+//        main2.logger.info("Protocol: TCP");
 
         // Hier können Sie zusätzliche Socket-Optionen loggen
         for (SocketOption<?> option : socketChannel.supportedOptions()) {
-            main2.logger.info("{}: {}", option.name(), socketChannel.getOption(option));
+//            main2.logger.info("{}: {}", option.name(), socketChannel.getOption(option));
         }
     }
 

@@ -14,6 +14,9 @@ public class RoutingTable {
     }
 
     public void addEntry(RoutingEntry entry) {
+        if (entries.contains(entry)) {
+            entries.remove(entry);
+        }
         entries.add(entry);
     }
 
@@ -98,17 +101,19 @@ public class RoutingTable {
 
             //check if there was a poison reverse or if there is a lower hop count
             RoutingEntry entry = getEntry(targetIp, targetPort, nextIp, nextPort);
+            main2.logger.info(String.format("Entry: %s", entry));
             if (entry == null) {
                 addEntry(targetIp, targetPort, nextIp, nextPort, hopCount);
             } else if (entry.getHopCount() > hopCount) {
                 entry.setHopCount(hopCount);
                 entry.setNextIp(nextIp);
                 entry.setNextPort(nextPort);
-            } else if (hopCount == 32) {
+            } else if (hopCount >= 32) {
                 entry.setHopCount(32);
             }
         }
     }
+
 
     public void markALlAsDead() {
         entries.forEach(entry -> entry.setHopCount(32));

@@ -52,6 +52,18 @@ public class RoutingEntry {
         return obj;
     }
 
+    @Override
+    public String toString() {
+        return "RoutingEntry{" +
+                "targetIp='" + targetIp + '\'' +
+                ", targetPort=" + targetPort +
+                ", nextIp='" + nextIp + '\'' +
+                ", nextPort=" + nextPort +
+                ", hopCount=" + hopCount +
+                '}';
+
+    }
+
     public void setNextIp(String nextIp) {
         this.nextIp = nextIp;
     }
@@ -59,4 +71,23 @@ public class RoutingEntry {
     public void setNextPort(int nextPort) {
         this.nextPort = nextPort;
     }
+
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof RoutingEntry)) {
+            return false;
+        }
+        RoutingEntry entry = (RoutingEntry) obj;
+        return targetIp.equals(entry.targetIp) && targetPort == entry.targetPort;
+    }
+
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + targetIp.hashCode();
+        result = 31 * result + targetPort;
+        return result;
+    }
+
 }

@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.nio.channels.SocketChannel;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -173,19 +174,15 @@ public class Verwalter implements Runnable
 
         JSONArray table = (JSONArray) data.get("table");
 
+        main2.logger.info("Table received in STU" + table.toString());
         routingTabelle.updateRoutingTable(table, t.getSourceIp(), t.getSourcePort());
     }
 
     private void handleMessage(Task t) {
         // Extract the unique identifier and JSON data from the task
-        UniqueIdentifier id = t.getId();
-        JSONObject paket = t.getJsonData();
-        // Attempt to find the next hop in the routing table using the task's ID
-        RoutingEntry entry = routingTabelle.findNextHop(id.getIP(), id.getPort());
+        JSONObject data = t.getJsonData();
 
         // Extract the data and headers from the packet
-        JSONObject data = paket.getJSONObject("data");
-        JSONObject header = paket.getJSONObject("header");
         JSONObject sharedHeader = data.getJSONObject("header");
 
         // Check and decrement the TTL value in the shared header
@@ -199,12 +196,6 @@ public class Verwalter implements Runnable
             return;
         }
 
-        // If no routing entry is found, log an error and throw an exception
-        if (entry == null) {
-            main2.logger.error("No entry found in RoutingTable");
-            throw new NullPointerException("No entry found in RoutingTable");
-        }
-
         // Update the data with the modified header
         data.put("header", sharedHeader);
 
@@ -212,16 +203,22 @@ public class Verwalter implements Runnable
         RoutingEntry nextHop = routingTabelle.findNextHop(sharedHeader.getString("dest_ip"),
                 sharedHeader.getInt("dest_port"));
 
+        // If no routing entry is found, log an error and throw an exception
+        if (nextHop == null) {
+            main2.logger.error("No entry found in RoutingTable");
+            //throw new NullPointerException("No entry found in RoutingTable");
+            return;
+        }
+
         // Create a unique identifier for the next hop
         UniqueIdentifier next = new UniqueIdentifier(nextHop.getNextIp(), nextHop.getNextPort());
 
-        // Calculate the CRC32 checksum for the data and add it to the header
-        long checkSum = CRC32Check.getCRC32Checksum(data.toString());
-        header.put("checksum", checkSum);
+        JSONArray paket = new JSONArray();
+        JSONObject header = buildCommonHeader(data, 1);
 
         // Update the packet with the new header and data
-        paket.put("header", header);
-        paket.put("data", data);
+        paket.put(header);
+        paket.put(data);
 
         // Forward the updated packet to the Sender queue
         try {
@@ -487,6 +484,11 @@ public class Verwalter implements Runnable
         paket.put(header);
         paket.put(data);
 
+        if(routingTabelle.getEntry(id.getIP(), id.getPort(), id.getIP(), id.getPort()).getHopCount() == 32)
+        {
+            return;
+        }
+
         try {
             Sender.Sender_Queue.put(new Task(TaskArt.SCCR, paket, id));
         }
@@ -515,20 +517,25 @@ public class Verwalter implements Runnable
     public void handleEXIT()
     {
         //sende EXIT an alle next in RoutingTable
+        List<UniqueIdentifier> uniqueIds = routingTabelle.getAllNextUniqueIds();
+
         routingTabelle.markALlAsDead();
-        for(UniqueIdentifier id : routingTabelle.getAllNextUniqueIds()) {
+
+        for(UniqueIdentifier id : uniqueIds)
+        {
             sendSTU(id);
         }
-        while(!Sender.Sender_Queue.isEmpty())
-        {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                main2.logger.error("Exception in handleEXIT", e);
-            }
-        }
 
-        exitProgram();
+//        while(!Sender.Sender_Queue.isEmpty())
+//        {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                main2.logger.error("Exception in handleEXIT", e);
+//            }
+//        }
+//
+//        exitProgram();
     }
 
     private void exitProgram() {
