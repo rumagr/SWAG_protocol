@@ -25,6 +25,7 @@ public class Empfaenger implements Runnable{
     private static final int THREAD_POOL_SIZE = 10;
     public static Selector empfaengerSelector;
     public static final int commonHeaderLength = 53;
+    public static final boolean ZEROTIER = false;
 
 
     @Override
@@ -44,15 +45,27 @@ public class Empfaenger implements Runnable{
 
             empfaengerSelector = selector;
 
+            //NetworkUtils.print();
+
+            InetSocketAddress serverAdress = null;
+
+            if (ZEROTIER) {
+                serverAdress = new InetSocketAddress(NetworkUtils.getNetworkInterface().getInetAddresses().nextElement(), SERVER_PORT);
+            }
+            else
+            {
+                serverAdress = new InetSocketAddress(NetworkUtils.getFirstNonLoopbackAddress(true), SERVER_PORT);
+            }
+
             // Bind the server socket channel to the specified port
-            serverSocketChannel.bind(new InetSocketAddress(SERVER_PORT));
+            serverSocketChannel.bind(serverAdress);
             // Configure the server socket to non-blocking mode
             serverSocketChannel.configureBlocking(false);
             // Register the server socket channel with the selector for accept operations
             serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
             // Log the start of the server
-            main2.logger.info("Server gestartet auf Port {}", SERVER_PORT);
+            main2.logger.info("Server gestartet auf Port " + serverAdress.getPort() + " IP: " + serverAdress.getAddress().getHostAddress());
 
             // Continuously handle incoming connections and data
             while (true) {
@@ -102,16 +115,18 @@ public class Empfaenger implements Runnable{
         logSocketInfo(client);
 
         // Retrieve IP and port from the client's remote address
-    //    InetSocketAddress remoteAddress = (InetSocketAddress) client.getRemoteAddress();
-    //    String ip = remoteAddress.getAddress().getHostAddress();
-    //    int port = remoteAddress.getPort();
+      //    InetSocketAddress remoteAddress = (InetSocketAddress) client.getRemoteAddress();
+       //   String ip = remoteAddress.getAddress().getHostAddress();
+        //  int port = remoteAddress.getPort();
         // Add the new connection to the connections map for management
     //    Verwalter.connections.put(new UniqueIdentifier(ip, SERVER_PORT), client);
         // Log the new connection for monitoring purposes
-    //    main2.logger.info(String.format("New Connection from %s:%d", ip, port));
+       //   main2.logger.info(String.format("New Connection from %s:%d", ip, port));
     }
 
     private static void forwardPacket(ExecutorService executorService, SelectionKey key) throws IOException {
+
+        main2.logger.info("in forwardPacket");
 
         // Retrieve the client channel from the selection key
         SocketChannel client = (SocketChannel) key.channel();
@@ -124,7 +139,7 @@ public class Empfaenger implements Runnable{
         InetSocketAddress remoteAddress = (InetSocketAddress) client.getRemoteAddress();
         String ip = remoteAddress.getAddress().getHostAddress();
         int port = remoteAddress.getPort();
-        UniqueIdentifier uniqueId = new UniqueIdentifier(ip, SERVER_PORT);
+        UniqueIdentifier uniqueId = new UniqueIdentifier(ip, port);
 
         main2.logger.info("forwardPacket from IP: " + ip + " Port: " + port);
         // If no data is read, close the client channel and exit the method

@@ -44,11 +44,11 @@ public class RoutingEntry {
 
     public JSONObject toJSONObject() {
         JSONObject obj = new JSONObject();
-        obj.put("targetIp", targetIp);
-        obj.put("targetPort", targetPort);
-        obj.put("nextIp", nextIp);
-        obj.put("nextPort", nextPort);
-        obj.put("hopCount", hopCount);
+        obj.put("target_ip", targetIp);
+        obj.put("target_port", targetPort);
+        obj.put("next_ip", nextIp);
+        obj.put("next_port", nextPort);
+        obj.put("hop_count", hopCount);
         return obj;
     }
 
@@ -84,10 +84,7 @@ public class RoutingEntry {
     }
 
     public int hashCode() {
-        int result = 17;
-        result = 31 * result + targetIp.hashCode();
-        result = 31 * result + targetPort;
-        return result;
+        return 5;
     }
 
 }

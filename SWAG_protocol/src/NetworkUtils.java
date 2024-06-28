@@ -41,4 +41,28 @@ public class NetworkUtils {
             }
         }
     }
+
+    public static NetworkInterface getNetworkInterface() {
+        try {
+            return NetworkInterface.getByName("ztnfai6ge2");
+        } catch (SocketException e) {
+            return null;
+        }
+    }
+
+    public static void print()
+    {
+        try
+        {
+            Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+            for(NetworkInterface ni : Collections.list(networkInterfaces))
+            {
+                System.out.println("Display name: " + ni.getDisplayName());
+                System.out.println("Name: " + ni.getName());
+            }
+        } catch(Exception e)
+        {
+            main2.logger.error("Error while getting network interfaces", e);
+        }
+    }
 }
