@@ -47,13 +47,13 @@ public class UI implements Runnable {
         }
         System.out.println("IP Addresse: " + ipAddress);
         System.out.println("Port: " + Empfaenger.SERVER_PORT);
-        System.out.println("Bitte einen Nickname eingeben: ");
+        System.out.println("Please enter a Nickname: ");
 
         this.nickname = scanner.nextLine();
 
         while (true) {
-            System.out.println("Bitte einen Command eingeben: ");
-            System.out.println("Die Commands sind: cto@ip:port, smto@ip:port:message, gcu, exit");
+            System.out.println("Please enter a Command: ");
+            System.out.println("Commands: cto@ip:port, smto@ip:port:message, gcu, exit");
             String input = scanner.nextLine();
 
             main2.logger.info(String.format("Input: %s", input));
@@ -80,7 +80,7 @@ public class UI implements Runnable {
                         sendExitToManagement();
                     default:
                         main2.logger.error("Invalid commmand at switch statement");
-                        //throw new IllegalArgumentException("Invalid command");
+                        System.out.println("Invalid command please try again.");
                 }
             }
             else
@@ -100,7 +100,7 @@ public class UI implements Runnable {
         if(split.length < 3)
         {
             main2.logger.error("Invalid Information at sendToManagement");
-            //throw new IllegalArgumentException("Invalid command");
+            System.out.println("Invalid command please try again.");
             return;
         }
 
@@ -114,7 +114,7 @@ public class UI implements Runnable {
         if(!checkIPandPort(ip, port))
         {
             main2.logger.error("Invalid IP or Port at sendToManagement");
-            //throw new IllegalArgumentException("Invalid command");
+            System.out.println("Invalid command please try again.");
             return;
         }
         int iport = Integer.parseInt(port);
@@ -129,10 +129,11 @@ public class UI implements Runnable {
       //split information and make a new Task
         String[] split = information.split(":");
 
-        if(split.length < 2)
+        if(split.length <= 2)
         {
             main2.logger.error("Invalid Information at connectToManagment");
-            throw new IllegalArgumentException("Invalid command");
+            System.out.println("Invalid command please try again.");
+            return;
         }
 
         String ip = split[0];
@@ -143,7 +144,7 @@ public class UI implements Runnable {
         if(!checkIPandPort(ip, port))
         {
             main2.logger.error("Invalid IP or Port at sendToManagement");
-            throw new IllegalArgumentException("Invalid command");
+            System.out.println("Invalid command please try again.");
         }
         int iport = Integer.parseInt(port);
 
@@ -161,7 +162,7 @@ public class UI implements Runnable {
         main2.logger.info("GET_CONNECTED_USERS Task to UI_Queue");
         Verwalter.Verwalter_Queue.add(t);
 
-        System.out.println("GET_CONNECTED_USERS added to UI_Queue");
+        //System.out.println("GET_CONNECTED_USERS added to UI_Queue");
     }
 
     private boolean checkIPandPort(String ip, String port) {
@@ -203,7 +204,7 @@ public class UI implements Runnable {
                     break;
                 default:
                     main2.logger.error("Invalid Task at switch statement");
-                    throw new IllegalArgumentException("Invalid Task");
+                    System.out.println("Invalid Task");
             }
         }
 
