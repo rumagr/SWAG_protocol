@@ -107,9 +107,9 @@ public class Verwalter implements Runnable
         //Verarbeite RouringTable und sende CCR
         main2.logger.info("Handling CR");
 
-        connections.put(new UniqueIdentifier(t.getId().getIP(), t.getSourcePort()), t.getSocketChannel());
+        connections.put(new UniqueIdentifier(t.getSourceIp(), t.getSourcePort()), t.getSocketChannel());
 
-        RoutingEntry newEntry = new RoutingEntry(t.getId().getIP(), t.getSourcePort(), t.getId().getIP(), t.getSourcePort(), 1);
+        RoutingEntry newEntry = new RoutingEntry(t.getSourceIp(), t.getSourcePort(), t.getSourceIp(), t.getSourcePort(), 1);
 
         routingTabelle.addEntry(newEntry);
 
@@ -122,13 +122,13 @@ public class Verwalter implements Runnable
         routingTabelle.updateRoutingTable(table, t.getSourceIp(), t.getSourcePort());
 
         //sende CRR
-        sendCRR(new UniqueIdentifier(t.getId().getIP(), t.getSourcePort()));
+        sendCRR(new UniqueIdentifier(t.getSourceIp(), t.getSourcePort()));
     }
 
     private void handleCRR(Task t) {
         //update RoutingTable
 
-        RoutingEntry newEntry = new RoutingEntry(t.getId().getIP(), t.getSourcePort(), t.getId().getIP(), t.getSourcePort(), 1);
+        RoutingEntry newEntry = new RoutingEntry(t.getSourceIp(), t.getSourcePort(), t.getSourceIp(), t.getSourcePort(), 1);
 
         routingTabelle.addEntry(newEntry);
 
@@ -141,14 +141,14 @@ public class Verwalter implements Runnable
 
     private void handleSCC(Task t) {
         //antworte mit SCCR
-        sendSCCR(new UniqueIdentifier(t.getId().getIP(), t.getSourcePort()));
+        sendSCCR(new UniqueIdentifier(t.getSourceIp(), t.getSourcePort()));
     }
 
     private void handleSCCR(Task t) {
 
         //stoppe den Timer fuer den Knoten
         try {
-            ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_STOP, new UniqueIdentifier(t.getId().getIP(), t.getSourcePort())));
+            ProtokollTimer.Timer_Queue.put(new Task(TaskArt.TIMER_STOP, new UniqueIdentifier(t.getSourceIp(), t.getSourcePort())));
         } catch (InterruptedException e) {
             main2.logger.error("Exception in handleSCCR", e);
         }

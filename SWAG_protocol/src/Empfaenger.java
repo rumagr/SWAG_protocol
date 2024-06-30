@@ -218,7 +218,7 @@ public class Empfaenger implements Runnable{
                 }
 
                 // Create a new task with the determined task type and JSON object
-                Task t = new Task(ta, data, new UniqueIdentifier(ip, sharedHeader.getInt("dest_port")),client, sharedHeader.getString("source_ip"), sharedHeader.getInt("source_port"));
+                Task t = new Task(ta, data, new UniqueIdentifier(sharedHeader.getString("dest_ip"), sharedHeader.getInt("dest_port")),client, sharedHeader.getString("source_ip"), sharedHeader.getInt("source_port"));
 
                 // Add the task to the appropriate queue based on the task type
                 if(TaskArt.MESSAGE_SELF == ta)
