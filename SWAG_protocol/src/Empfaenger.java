@@ -176,7 +176,7 @@ public class Empfaenger implements Runnable{
                 main2.logger.info("Received data: {}", data.toString());
 
                 // Perform an integrity check on the received JSON object
-                if(!checkIntegrity(header, data))
+                if(!checkIntegrity(header, paketData))
                 {
                     // Log an error if the integrity check fails and exit the method
                     main2.logger.error("Integrity check failed");
@@ -259,15 +259,13 @@ public class Empfaenger implements Runnable{
         });
     }
 
-    private static boolean checkIntegrity(JSONObject header, JSONObject data) {
-        //TODO rausnehmen
-        return true;
+    private static boolean checkIntegrity(JSONObject header, String data) {
 
         // Retrieve the expected CRC32 checksum value from the header
-        //long expectedCRC32 = Long.parseLong(header.getString("crc32"));
+        long expectedCRC32 = Long.parseLong(header.getString("crc32"));
 
         // Return true if both the CRC32 checksum and the length of the data are valid
-        //return CRC32Check.isChecksumValid(data.toString(), expectedCRC32);
+        return CRC32Check.isChecksumValid(data, expectedCRC32);
     }
 
 

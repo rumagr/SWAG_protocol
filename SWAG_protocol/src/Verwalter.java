@@ -526,16 +526,16 @@ public class Verwalter implements Runnable
             sendSTU(id);
         }
 
-//        while(!Sender.Sender_Queue.isEmpty())
-//        {
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                main2.logger.error("Exception in handleEXIT", e);
-//            }
-//        }
-//
-//        exitProgram();
+        while(!Sender.Sender_Queue.isEmpty())
+        {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                main2.logger.error("Exception in handleEXIT", e);
+            }
+        }
+
+        exitProgram();
     }
 
     private void exitProgram() {

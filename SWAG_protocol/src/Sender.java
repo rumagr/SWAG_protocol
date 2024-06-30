@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -66,9 +67,10 @@ public class Sender implements Runnable {
             }
             catch (Exception e) {
                 main2.logger.error("Exception while creating SocketChannel", e);
+                throw new RuntimeException("Exception while creating SocketChannel", e);
             }
         }
-        ByteBuffer buffer = ByteBuffer.wrap(packet.getBytes());
+        ByteBuffer buffer = ByteBuffer.wrap(packet.getBytes(StandardCharsets.UTF_8));
         try {
             socketChannel.write(buffer);
             main2.logger.info("Sending packet: " + packet + " to IP{" + id.getIP() + "} and Port{" + id.getPort() + "}");
