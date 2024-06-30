@@ -38,7 +38,6 @@ public class Sender implements Runnable {
                 handleTask(t);
             } catch (Exception e) {
                 main2.logger.error("Exeption in Sender", e);
-                Thread.currentThread().interrupt();
             }
         }
     }
@@ -67,7 +66,6 @@ public class Sender implements Runnable {
             }
             catch (Exception e) {
                 main2.logger.error("Exception while creating SocketChannel", e);
-                throw new RuntimeException("Exception while creating SocketChannel", e);
             }
         }
         ByteBuffer buffer = ByteBuffer.wrap(packet.getBytes(StandardCharsets.UTF_8));
