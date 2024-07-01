@@ -1,11 +1,12 @@
 package src;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.Configurator;
-
-import java.io.*;
+import src.service.ProtokollTimer;
+import src.werkzeug.Empfaenger;
+import src.werkzeug.Sender;
+import src.werkzeug.UI;
+import src.werkzeug.Verwalter;
 
 public class main2 {
     public final static String s = "test.json";

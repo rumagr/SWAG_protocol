@@ -1,9 +1,9 @@
-package src;
+package src.marterial;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import src.fachwert.TaskArt;
 
-import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.util.List;
 

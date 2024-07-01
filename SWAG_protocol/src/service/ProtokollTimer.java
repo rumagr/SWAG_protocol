@@ -1,4 +1,10 @@
-package src;
+package src.service;
+
+import src.*;
+import src.fachwert.TaskArt;
+import src.marterial.Task;
+import src.marterial.UniqueIdentifier;
+import src.werkzeug.Verwalter;
 
 import java.util.HashMap;
 import java.util.Map;

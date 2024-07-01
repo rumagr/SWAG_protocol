@@ -1,6 +1,5 @@
-package src;
+package src.service;
 
-import java.util.Arrays;
 import java.util.zip.CRC32;
 import java.nio.charset.StandardCharsets;
 

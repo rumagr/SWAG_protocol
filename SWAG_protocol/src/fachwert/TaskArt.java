@@ -1,4 +1,4 @@
-package src;
+package src.fachwert;
 
 public enum TaskArt {
     MESSAGE, MESSAGE_SELF, MESSAGE_OTHERS, CR, CRR, SCC, SCCR, STU,

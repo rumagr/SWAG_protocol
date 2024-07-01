@@ -1,4 +1,6 @@
-package src;
+package src.service;
+
+import src.main2;
 
 import java.net.*;
 import java.util.Collections;

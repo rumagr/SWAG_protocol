@@ -1,4 +1,4 @@
-package src;
+package src.service;
 
 import java.util.regex.Pattern;
 
