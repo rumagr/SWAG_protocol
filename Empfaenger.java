@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 
 public class Empfaenger implements Runnable{
     public static int SERVER_PORT = 6789;
-    private static final int BUFFER_SIZE = 1024;
+    private static final int BUFFER_SIZE = 4096;
     private static final int EXPECTED_DATA_LENGTH = 53;
     private static final int THREAD_POOL_SIZE = 10;
     public static Selector empfaengerSelector;
