@@ -14,10 +14,22 @@ public class RoutingTable {
     }
 
     public void addEntry(RoutingEntry entry) {
-        if (entries.contains(entry)) {
-            entries.remove(entry);
+
+        int index = entries.indexOf(entry);
+
+        if(index != -1)
+        {
+            if(entries.get(index).getHopCount() > entry.getHopCount())
+            {
+                entries.remove(entry);
+                entries.add(entry);
+            }
         }
-        entries.add(entry);
+        else
+        {
+            entries.add(entry);
+        }
+
     }
 
     public void removeEntry(String targetIp, int targetPort) {
@@ -76,7 +88,7 @@ public class RoutingTable {
     public JSONArray toJSONArray(UniqueIdentifier next) {
         JSONArray array = new JSONArray();
         for (RoutingEntry entry : entries) {
-            if(!(entry.getNextIp().equals(next.getIP())) || ((entry.getNextPort() != next.getPort()))) {
+            if(!(entry.getNextIp().equals(next.getIP())) || ((entry.getNextPort() != next.getPort())) || !(entry.getTargetIp().equals(next.getIP()))) {
                 array.put(entry.toJSONObject());
             }
         }
@@ -104,12 +116,12 @@ public class RoutingTable {
             main2.logger.info(String.format("Entry: %s", entry));
             if (entry == null) {
                 addEntry(targetIp, targetPort, nextIp, nextPort, hopCount);
-            } else if (entry.getHopCount() > hopCount) {
+            } else if (hopCount >= 32) {
+                entry.setHopCount(32);
+            } else {
                 entry.setHopCount(hopCount);
                 entry.setNextIp(nextIp);
                 entry.setNextPort(nextPort);
-            } else if (hopCount >= 32) {
-                entry.setHopCount(32);
             }
         }
     }
