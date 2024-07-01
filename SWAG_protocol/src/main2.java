@@ -14,6 +14,7 @@ public class main2 {
 
     public static void main(String[] args)
 {
+        //Auskommentieren um Logausgaben zu deaktivieren
         //Configurator.setLevel(main2.class.getName(), Level.OFF);
 
         UI ui = new UI();

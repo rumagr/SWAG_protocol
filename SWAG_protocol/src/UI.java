@@ -47,7 +47,8 @@ public class UI implements Runnable {
         } catch (SocketException e) {
             main2.logger.error("Error while getting IP address", e);
         }
-        //TODO rausnehmen evtl
+
+        //wait for server to find open port
         try {
             sleep(200);
         } catch (InterruptedException e) {
@@ -135,15 +136,8 @@ public class UI implements Runnable {
     }
 
     private void connectToManagment(String information) {
-      //split information and make a new Task
+        //split information and make a new Task
         String[] split = information.split(":");
-
-//        if(split.length <= 2)
-//        {
-//            main2.logger.error("Invalid Information at connectToManagment");
-//            System.out.println("Invalid command please try again.");
-//            return;
-//        }
 
         String ip = split[0];
         main2.logger.info(String.format("IP @cto is: %s", ip));

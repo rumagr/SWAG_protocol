@@ -19,7 +19,7 @@ public class RoutingTable {
 
         if(index != -1)
         {
-            if(entries.get(index).getHopCount() > entry.getHopCount())
+            if(entries.get(index).getHopCount() >= entry.getHopCount())
             {
                 entries.remove(entry);
                 entries.add(entry);
@@ -66,7 +66,7 @@ public class RoutingTable {
         List<UniqueIdentifier> uniqueIds = new ArrayList<>();
         for (RoutingEntry entry : entries) {
             UniqueIdentifier newId = new UniqueIdentifier(entry.getTargetIp(), entry.getTargetPort());
-            if ((!uniqueIds.contains(newId)) && (entry.getHopCount() != 32)) {
+            if ((!uniqueIds.contains(newId)) && (entry.getHopCount() < 32)) {
                 uniqueIds.add(newId);
             }
         }
@@ -130,5 +130,4 @@ public class RoutingTable {
     public void markALlAsDead() {
         entries.forEach(entry -> entry.setHopCount(32));
     }
-    // Additional methods can be implemented as needed, such as updating an entry, listing all entries, etc.
 }

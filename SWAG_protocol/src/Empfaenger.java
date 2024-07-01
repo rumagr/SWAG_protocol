@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 
 public class Empfaenger implements Runnable{
     public static int SERVER_PORT = 6789;
-    private static final int BUFFER_SIZE = 1024;
+    private static final int BUFFER_SIZE = 4096;
     private static final int EXPECTED_DATA_LENGTH = 53;
     private static final int THREAD_POOL_SIZE = 10;
     public static Selector empfaengerSelector;
@@ -113,15 +113,6 @@ public class Empfaenger implements Runnable{
         client.register(selector, SelectionKey.OP_READ);
         // Log socket information for the new connection
         logSocketInfo(client);
-
-        // Retrieve IP and port from the client's remote address
-      //    InetSocketAddress remoteAddress = (InetSocketAddress) client.getRemoteAddress();
-       //   String ip = remoteAddress.getAddress().getHostAddress();
-        //  int port = remoteAddress.getPort();
-        // Add the new connection to the connections map for management
-    //    Verwalter.connections.put(new UniqueIdentifier(ip, SERVER_PORT), client);
-        // Log the new connection for monitoring purposes
-       //   main2.logger.info(String.format("New Connection from %s:%d", ip, port));
     }
 
     private static void forwardPacket(ExecutorService executorService, SelectionKey key) throws IOException {
@@ -156,9 +147,8 @@ public class Empfaenger implements Runnable{
                 // Convert the buffer's data to a string representation
                 String jsonstr = new String(buffer.array(), StandardCharsets.UTF_8);
 
-//                main2.logger.info("Received message: {}", jsonstr);
+                //main2.logger.info("Received message: {}", jsonstr);
 
-                //TODO splitting je nach anforderung anpassen
                 String commonHeader = jsonstr.substring(0, commonHeaderLength + 1);
 
                 main2.logger.info("Received common header: {}", commonHeader);
@@ -167,7 +157,7 @@ public class Empfaenger implements Runnable{
                 JSONObject header = new JSONObject(commonHeader);
 
                 String paketData = jsonstr.substring(commonHeaderLength, commonHeaderLength + header.getInt("length"));
-//                main2.logger.info("Received common data: {}", paketData);
+                //main2.logger.info("Received common data: {}", paketData);
 
 
                 JSONObject data = new JSONObject(paketData);
@@ -273,15 +263,15 @@ public class Empfaenger implements Runnable{
         InetSocketAddress localAddress = (InetSocketAddress) socketChannel.getLocalAddress();
         InetSocketAddress remoteAddress = (InetSocketAddress) socketChannel.getRemoteAddress();
 
-//        main2.logger.info("Connection Info: ");
-//        main2.logger.info("Local Address: {}:{}", localAddress.getAddress().getHostAddress(), localAddress.getPort());
-//        main2.logger.info("Remote Address: {}:{}", remoteAddress.getAddress().getHostAddress(), remoteAddress.getPort());
-//        main2.logger.info("Protocol: TCP");
+        //main2.logger.info("Connection Info: ");
+        //main2.logger.info("Local Address: {}:{}", localAddress.getAddress().getHostAddress(), localAddress.getPort());
+        //main2.logger.info("Remote Address: {}:{}", remoteAddress.getAddress().getHostAddress(), remoteAddress.getPort());
+        //main2.logger.info("Protocol: TCP");
 
         // Hier können Sie zusätzliche Socket-Optionen loggen
-        for (SocketOption<?> option : socketChannel.supportedOptions()) {
-//            main2.logger.info("{}: {}", option.name(), socketChannel.getOption(option));
-        }
+        //for (SocketOption<?> option : socketChannel.supportedOptions()) {
+            //main2.logger.info("{}: {}", option.name(), socketChannel.getOption(option));
+        //}
     }
 
     private boolean portIsAvailable(int port) {

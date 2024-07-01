@@ -14,6 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Verwalter implements Runnable
 {
+    public static final int STATUS = 0;
     public static BlockingQueue<Task> Verwalter_Queue = new LinkedBlockingQueue<>();
     public static ConcurrentHashMap<UniqueIdentifier, SocketChannel> connections = new ConcurrentHashMap<>();
     private static RoutingTable routingTabelle = new RoutingTable();
@@ -366,7 +367,6 @@ public class Verwalter implements Runnable
         header.put("dest_ip", dest_ip);
         header.put("dest_port", dest_port);
         header.put("ttl", ttl);
-        //TODO hier mal loggen
         main2.logger.info("Shared Header created {src_ip: " + src_ip + ", src_port: " + src_port + ", dest_ip: " + dest_ip + ", dest_port: " + dest_port + ", ttl: " + ttl + "}");
         return header;
     }
@@ -538,7 +538,7 @@ public class Verwalter implements Runnable
     }
 
     private void exitProgram() {
-        System.exit(0);
+        System.exit(STATUS);
     }
 
 }
