@@ -88,7 +88,7 @@ public class RoutingTable {
     public JSONArray toJSONArray(UniqueIdentifier next) {
         JSONArray array = new JSONArray();
         for (RoutingEntry entry : entries) {
-            if(!(entry.getNextIp().equals(next.getIP())) || ((entry.getNextPort() != next.getPort())) || !(entry.getTargetIp().equals(next.getIP()))) {
+            if(!(entry.getNextIp().equals(next.getIP())) && !(entry.getTargetIp().equals(next.getIP()))) {
                 array.put(entry.toJSONObject());
             }
         }
