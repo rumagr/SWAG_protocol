@@ -17,18 +17,22 @@ public class NetworkUtils {
 
                 Enumeration<InetAddress> addresses = iface.getInetAddresses();
 
+                int i = 0;
+
                 for (InetAddress addr : Collections.list(addresses)) {
                     // Check for IPv4 address if preferred.
 
                     //main2.logger.info("IP: " + addr.getHostAddress());
 
-                    if (preferIpv4 && addr instanceof Inet4Address) {
+                    if (preferIpv4 && addr instanceof Inet4Address && (i == 1)) {
                         return addr.getHostAddress();
                     }
                     // If not preferring IPv4, or no IPv4 address found, check for any non-loopback address.
                     if (!preferIpv4 && !addr.isLoopbackAddress()) {
                         return addr.getHostAddress();
                     }
+
+                    i++;
                 }
             }
             return null;
