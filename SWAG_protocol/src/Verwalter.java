@@ -155,7 +155,6 @@ public class Verwalter implements Runnable
 
         //keep counter up to date
         refreshCounter--;
-        refreshCounter--;
 
         if(!(refreshCounter > 0))
         {
