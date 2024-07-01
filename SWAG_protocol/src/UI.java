@@ -9,6 +9,8 @@ import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static java.lang.Thread.sleep;
+
 
 //CONNECT_TO, SEND_MESSAGE_TO, GET_CONNECTED_USERS
 
@@ -45,6 +47,13 @@ public class UI implements Runnable {
         } catch (SocketException e) {
             main2.logger.error("Error while getting IP address", e);
         }
+        //TODO rausnehmen evtl
+        try {
+            sleep(200);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         System.out.println("IP Addresse: " + ipAddress);
         System.out.println("Port: " + Empfaenger.SERVER_PORT);
         System.out.println("Please enter a Nickname: ");

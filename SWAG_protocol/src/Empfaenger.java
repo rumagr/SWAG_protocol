@@ -176,7 +176,7 @@ public class Empfaenger implements Runnable{
                 main2.logger.info("Received data: {}", data.toString());
 
                 // Perform an integrity check on the received JSON object
-                if(!checkIntegrity(header, data))
+                if(!checkIntegrity(header, paketData))
                 {
                     // Log an error if the integrity check fails and exit the method
                     main2.logger.error("Integrity check failed");
@@ -218,7 +218,7 @@ public class Empfaenger implements Runnable{
                 }
 
                 // Create a new task with the determined task type and JSON object
-                Task t = new Task(ta, data, new UniqueIdentifier(ip, sharedHeader.getInt("dest_port")),client, sharedHeader.getString("source_ip"), sharedHeader.getInt("source_port"));
+                Task t = new Task(ta, data, new UniqueIdentifier(sharedHeader.getString("dest_ip"), sharedHeader.getInt("dest_port")),client, sharedHeader.getString("source_ip"), sharedHeader.getInt("source_port"));
 
                 // Add the task to the appropriate queue based on the task type
                 if(TaskArt.MESSAGE_SELF == ta)
@@ -259,15 +259,13 @@ public class Empfaenger implements Runnable{
         });
     }
 
-    private static boolean checkIntegrity(JSONObject header, JSONObject data) {
-        //TODO rausnehmen
-        return true;
+    private static boolean checkIntegrity(JSONObject header, String data) {
 
         // Retrieve the expected CRC32 checksum value from the header
-        //long expectedCRC32 = Long.parseLong(header.getString("crc32"));
+        long expectedCRC32 = Long.parseLong(header.getString("crc32"));
 
         // Return true if both the CRC32 checksum and the length of the data are valid
-        //return CRC32Check.isChecksumValid(data.toString(), expectedCRC32);
+        return CRC32Check.isChecksumValid(data, expectedCRC32);
     }
 
 
